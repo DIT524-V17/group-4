@@ -33,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        test.setText("Right");
+                        test.setText("Turn right");
                         return true;
                     case MotionEvent.ACTION_UP:
-                        test.setText("test");
+                        test.setText("Test");
                         return true;
                 }
                 return false;
