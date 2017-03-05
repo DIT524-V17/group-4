@@ -14,17 +14,17 @@
     tools:showIn="@layout/activity_main">
 
     <Button
-        android:text="TestRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_right"
+        android:id="@+id/button_turnRight"
         android:elevation="0dp"
         android:fontFamily="sans-serif-medium"
         android:width="200dp"
         android:height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:text="Turn Right" />
 
     <TextView
         android:text="test"

@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         test = (TextView) findViewById(R.id.test_output);
 
-        Button button = (Button) findViewById(R.id.button_right);
+        // Button for turning right
+        Button button = (Button) findViewById(R.id.button_turnRight);
         button.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
