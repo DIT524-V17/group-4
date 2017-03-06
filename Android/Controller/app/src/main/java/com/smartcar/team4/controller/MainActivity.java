@@ -33,9 +33,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction()) {
+                    // when button is pushed down
                     case MotionEvent.ACTION_DOWN:
                         test.setText("Turn right");
                         return true;
+                    // when button is released
                     case MotionEvent.ACTION_UP:
                         test.setText("Test");
                         return true;
