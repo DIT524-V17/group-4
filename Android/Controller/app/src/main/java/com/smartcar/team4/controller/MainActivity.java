@@ -1,8 +1,7 @@
 package com.smartcar.team4.controller;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
@@ -11,8 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import static android.graphics.Color.BLACK;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,14 +28,33 @@ public class MainActivity extends AppCompatActivity {
         test = (TextView) findViewById(R.id.test_output);
 
         // Button for turning right
-        Button button = (Button) findViewById(R.id.button_turnRight);
-        button.setOnTouchListener(new OnTouchListener() {
+        Button buttonRight = (Button) findViewById(R.id.button_turnRight);
+        buttonRight.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction()) {
                     // when button is pushed down
                     case MotionEvent.ACTION_DOWN:
                         test.setText("Turn right");
+                        return true;
+                    // when button is released
+                    case MotionEvent.ACTION_UP:
+                        test.setText("Test");
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        // Button for turning left
+        Button buttonLeft = (Button) findViewById(R.id.button_turnLeft);
+        buttonLeft.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    // when button is pushed down
+                    case MotionEvent.ACTION_DOWN:
+                        test.setText("Turn left");
                         return true;
                     // when button is released
                     case MotionEvent.ACTION_UP:
