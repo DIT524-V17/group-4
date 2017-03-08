@@ -71,4 +71,28 @@
         android:layout_alignStart="@+id/button_turnLeft"
         android:layout_alignTop="@+id/test_output" />
 
+    <Button
+        android:id="@+id/button_reverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/button_turnLeft"
+        android:layout_toLeftOf="@+id/button_turnLeft"
+        android:layout_toStartOf="@+id/button_turnLeft"
+        android:text="Reverse" />
+
+    <Button
+        android:id="@+id/button_forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_reverse"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/test_output"
+        android:layout_toLeftOf="@+id/button_turnLeft"
+        android:layout_toStartOf="@+id/button_turnLeft"
+        android:text="Forward" />
+
 </RelativeLayout>
