@@ -95,4 +95,17 @@
         android:layout_toStartOf="@+id/button_turnLeft"
         android:text="Forward" />
 
+    <Button
+        android:id="@+id/disconnect_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_red_dark"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Disconnect"
+        android:textColor="@android:color/background_light"
+        android:layout_alignTop="@+id/button_forward"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
