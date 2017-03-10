@@ -3,6 +3,7 @@ package com.smartcar.team4.controller;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
@@ -42,9 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        test = (TextView) findViewById(R.id.test_output);
+
 
         //Calls the bluetooth connection method.
         new ConnectToBt().execute();
@@ -61,46 +60,133 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         // Button for turning right
-        Button buttonRight = (Button) findViewById(R.id.button_turnRight);
-        buttonRight.setOnTouchListener(new OnTouchListener() {
+        Button buttonForward = (Button) findViewById(R.id.button_forward);
+        buttonForward.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction()) {
                     // when button is pushed down
                     case MotionEvent.ACTION_DOWN:
-                        test.setText("Turn right");
+                        goForward();
                         return true;
                     // when button is released
                     case MotionEvent.ACTION_UP:
-                        test.setText("Test");
+                        stop();
                         return true;
                 }
                 return false;
             }
         });
 
+
         // Button for turning left
-        Button buttonLeft = (Button) findViewById(R.id.button_turnLeft);
+        Button buttonReverse = (Button) findViewById(R.id.button_reverse);
+        buttonReverse.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    // when button is pushed down
+                    case MotionEvent.ACTION_DOWN:
+                        goReverse();
+                        return true;
+                    // when button is released
+                    case MotionEvent.ACTION_UP:
+                        stop();
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        Button buttonLeft = (Button) findViewById(R.id.button_left);
         buttonLeft.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction()) {
                     // when button is pushed down
                     case MotionEvent.ACTION_DOWN:
-                        test.setText("Turn left");
+                        goLeft();
                         return true;
                     // when button is released
                     case MotionEvent.ACTION_UP:
-                        test.setText("Test");
+                        stop();
                         return true;
                 }
                 return false;
             }
         });
 
-
+        Button buttonRight = (Button) findViewById(R.id.button_right);
+        buttonRight.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    // when button is pushed down
+                    case MotionEvent.ACTION_DOWN:
+                        goRight();
+                        return true;
+                    // when button is released
+                    case MotionEvent.ACTION_UP:
+                        stop();
+                        return true;
+                }
+                return false;
+            }
+        });
     }
+
+    private void goForward() {
+        if(btSocket != null){
+            try{
+                btSocket.getOutputStream().write("f".toString().getBytes());
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void goReverse(){
+        if(btSocket != null){
+            try{
+                btSocket.getOutputStream().write("b".toString().getBytes());
+            } catch(IOException f){
+                f.printStackTrace();
+            }
+        }
+    }
+
+    private void goRight(){
+        if(btSocket != null){
+            try{
+                btSocket.getOutputStream().write("r".toString().getBytes());
+            } catch(IOException f){
+                f.printStackTrace();
+            }
+        }
+    }
+
+    private void goLeft(){
+        if(btSocket != null){
+            try{
+                btSocket.getOutputStream().write("l".toString().getBytes());
+            } catch(IOException f){
+                f.printStackTrace();
+            }
+        }
+    }
+
+    private void stop(){
+        if(btSocket != null){
+            try{
+                btSocket.getOutputStream().write("s".toString().getBytes());
+            } catch(IOException f){
+                f.printStackTrace();
+            }
+        }
+    }
+
     //Method for disconnect the bluetooth connection.
     private void Disconnect(){
         if (btSocket!=null){
@@ -184,5 +270,7 @@ public class MainActivity extends AppCompatActivity {
             }
             progress.dismiss();
         }
+
+
     }
 }
