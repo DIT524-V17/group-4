@@ -5,6 +5,7 @@
 Odometer encoderLeft, encoderRight;
 SR04 frontSensor, backSensor;
 Car car;
+Servo carServo;
 
 const int TRIGGER1_PIN = 6; //D6
 const int ECHO1_PIN = 5; //D5
@@ -13,6 +14,10 @@ const int ECHO_PIN = 7;
 const int encoderLeftPin = 2;
 const int encoderRightPin = 3;
 
+const int fwSpeed =  50; //set forward speed
+const int bwSpeed = -50; //set backward speed
+const int rDegree =  50; //set degrees to turn right
+const int lDegree = -50; //set degrees to turn left
 
 void setup() {
   Serial3.begin(9600);
@@ -40,19 +45,21 @@ void loop() {
     char input = Serial3.read(); //read everything that has been received so far and log down the last entry
        Serial.println(input);
       if(input == 'f'){
-        car.setMotorSpeed(50,50);
+        car.setMotorSpeed(fwSpeed);
       } 
       if(input == 'b'){
-        car.setMotorSpeed(-50,-50);
+        car.setMotorSpeed(bwSpeed);
       }
       if(input == 's'){
-        car.setMotorSpeed(0,0);
+        car.setSpeed(0);
     }
       if(input == 'l'){
-        car.setMotorSpeed(0,50);
+        car.setSpeed(fwSpeed);
+        car.setAngle(lDegrees);
       }
       if(input == 'r'){
-        car.setMotorSpeed(50,0);
+        car.setSpeed(fwSpeed);
+        car.setAngle(rDegrees);
       } 
     }
     }
