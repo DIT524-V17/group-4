@@ -1,8 +1,10 @@
 #include <Smartcar.h>
+#include <Wire.h>
+#include <Servo.h>
 
 Odometer encoderLeft, encoderRight;
-Car car;
 SR04 frontSensor, backSensor;
+Car car;
 
 const int TRIGGER1_PIN = 6; //D6
 const int ECHO1_PIN = 5; //D5
