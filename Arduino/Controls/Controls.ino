@@ -45,10 +45,10 @@ void loop() {
     char input = Serial3.read(); //read everything that has been received so far and log down the last entry
        Serial.println(input);
       if(input == 'f'){
-        car.setMotorSpeed(fwSpeed);
+        car.setSpeed(fwSpeed);
       } 
       if(input == 'b'){
-        car.setMotorSpeed(bwSpeed);
+        car.setSpeed(bwSpeed);
       }
       if(input == 's'){
         car.setSpeed(0);
