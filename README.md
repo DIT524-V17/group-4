@@ -1,2 +1,2 @@
 # group-4
-Some text.
+This is the branch for testing new codes before release
