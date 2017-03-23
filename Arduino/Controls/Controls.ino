@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include <Smartcar.h>
 #include <Wire.h>
 #include <Servo.h>
@@ -33,25 +32,16 @@ void setup() {
 }
 
 
-void loop() {
-   int frDistance = frontSensor.getDistance();
-   int baDistance = backSensor.getDistance();
-   
-   car.updateMotors();
-   handleInput(); 
-    
-   if (frDistance != 0 && frDistance < 20) {
+void loop() {  
+   if (frontSensor.getMedianDistance() != 0 && frontSensor.getMedianDistance() < 20) {
     car.stop();
   } 
-   if(baDistance !=0 && baDistance <20) {
+
+   if(backSensor.getMedianDistance() !=0 && backSensor.getMedianDistance() <20) {
     car.stop();
    }
    ultsensorConflict();
-}
-
-// handle serial input    
-void handleInput(){
-    if(Serial3.available()){
+  if(Serial3.available()){
     char input = Serial3.read(); //read everything that has been received so far and log down the last entry
        Serial.println(input);
       if(input == 'f'){
@@ -71,10 +61,11 @@ void handleInput(){
         car.setSpeed(fwSpeed);
         car.setAngle(rDegrees);
       } 
-    }	
-}
+    }
+    }
+	
 // incase both front ultrasonicSensor and back ultrasonicSensor are values at same time.	
-void ultsensorConflict(){
+ultsensorConflict(){
  if((frontSensor.getDistance()&&backSensor.getDistance())<15){
    car.stop();
    Serial.write("1");
