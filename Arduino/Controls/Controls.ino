@@ -33,14 +33,14 @@ void setup() {
 
 
 void loop() {  
-   if (frontSensor.getMedianDistance() != 0 && frontSensor.getMedianDistance() < 15) {
-    car.setMotorSpeed(0,0);
+   if (frontSensor.getMedianDistance() != 0 && frontSensor.getMedianDistance() < 20) {
+    car.stop();
   } 
 
-   if(backSensor.getMedianDistance() !=0 && backSensor.getMedianDistance() <15) {
-    car.setMotorSpeed(0,0);
+   if(backSensor.getMedianDistance() !=0 && backSensor.getMedianDistance() <20) {
+    car.stop();
    }
-   
+   ultsensorConflict();
   if(Serial3.available()){
     char input = Serial3.read(); //read everything that has been received so far and log down the last entry
        Serial.println(input);
@@ -63,5 +63,17 @@ void loop() {
       } 
     }
     }
-
+	
+// incase both front ultrasonicSensor and back ultrasonicSensor are values at same time.	
+ultsensorConflict(){
+ if((frontSensor.getDistance()&&backSensor.getDistance())<15){
+   car.stop();
+   Serial.write("1");
+   delay(100);
+   Serial.flush();
+ }else if ((frontSensor.getDistance()&&backSensor.getDistance())==0){
+  Serial.write("0");
+   car.setSpeed(50);
+ }
+}
 
