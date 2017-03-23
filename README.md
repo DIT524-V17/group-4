@@ -1,2 +1,3 @@
 # group-4
-Some text.
+M.A.F.A.K.S project group
+We are creating a car that will be able to dance to the music and avoid obstacles while doing it.
