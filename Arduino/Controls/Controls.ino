@@ -1,14 +1,11 @@
 #include <Smartcar.h>
 
-#include <Smartcar.h>
-
-#include <Smartcar.h>
 #include <Wire.h>
 
 
 Odometer encoderLeft, encoderRight;
 SR04 frontSensor;
-SR04 backSensor; 
+SR04 backSensor;
 Gyroscope gyro;
 Car car;
 
@@ -31,71 +28,91 @@ int baDistance;
 
 void setup() {
   Serial3.begin(9600);
-  Serial.begin(19200);
-  
+  Serial.begin(9600);
+
   gyro.attach();
   encoderLeft.attach(encoderLeftPin);
   encoderRight.attach(encoderRightPin);
   frontSensor.attach(TRIGGER_PIN, ECHO_PIN);
   backSensor.attach(TRIGGER1_PIN, ECHO1_PIN);
-  
+
   // start components
   gyro.begin();
   encoderLeft.begin();
   encoderRight.begin();
   car.begin(encoderLeft, encoderRight, gyro); //initialize the car using the encoders
-  
+
   //ini Ultrasonic distance meansurement as 0
   frDistance = 0;
   baDistance = 0;
-  
+
 }
 
 
-void loop() {  
-   frDistance = frontSensor.getDistance();
-   baDistance = backSensor.getDistance();
-   handleInput();
-   
-   int curSpeed = car.getSpeed();
-   if (curSpeed == 0){
-		Direction = 'n';
-   }
-   
-   if ( NoObstacle(frDistance) == false && Direction != 'b' && Direction != 'n'){
-    car.setSpeed(0);
-   }
-   if (NoObstacle(baDistance) == false && Direction == 'b') {
-    car.setSpeed(0);
-   }
- 
+void loop() {
+  frDistance = frontSensor.getDistance();
+  baDistance = backSensor.getDistance();
+  handleInput();
 
-   //ultsensorConflict();
-   
+
+  int curSpeed = car.getSpeed(); // read the current speed of car
+  if (curSpeed == 0) {
+    Direction = 'n';
+  }
+
+  if ( NoObstacle(frDistance) == false && Direction != 'b' && Direction != 'n') {
+    if (frDistance > 20 && frDistance == 0){
+    car.setSpeed(fwSpeed);
+  }
+    else{ 
+      if (curSpeed != 0){
+        car.setSpeed(0);
+      }
+    }
+  } 
+  curSpeed = car.getSpeed(); 
+  if (NoObstacle(baDistance) == false && Direction == 'b') {
+    if (baDistance > 20 && baDistance == 0){
+    car.setSpeed(bwSpeed);
+   }
+    else {
+      if (curSpeed != 0){
+        car.setSpeed(0);
+      }
+      else{
+        car.setSpeed(0);
+      }
+    }
+  }
+
+
+  //ultsensorConflict();
+
 }
-   
-   
-void handleInput(){
-  if(Serial3.available()){
-    char input = Serial3.read(); //read everything that has been received so far and log down the last entry
+
+
+void handleInput() {
+  if (Serial3.available()) {
+    char input;
+    while (Serial3.available()) input = Serial3.read(); //read everything that has been received so far and log down the last entry
     switch (input) {
       case 'f': //forward
-		Direction = 'f';
+        Direction = 'f';
         car.setSpeed(fwSpeed);
         car.setAngle(0);
         break;
       case 'b': //backward
-		Direction = 'b';
+        Direction = 'b';
         car.setSpeed(bwSpeed);
         car.setAngle(0);
         break;
       case 'l': //turn left
-		Direction = 'l';
+        Direction = 'l';
         car.setSpeed(fwSpeed);
         car.setAngle(lDegree);
         break;
       case 'r': //turn right
-		Direction = 'r';
+        Direction = 'r';
         car.setSpeed(fwSpeed);
         car.setAngle(rDegree);
         break;
@@ -111,28 +128,29 @@ void handleInput(){
 }
 
 
-boolean NoObstacle(int distance){
-	if (distance > 20){
-		return true;
-	}
-	if (distance == 0){
-		return true;
-	}
-	else{
-		return false;
-	}
+boolean NoObstacle(int distance) {
+  if (distance > 20) {
+    return true;
+  }
+  if (distance == 0) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
-  
-// incase both front ultrasonicSensor and back ultrasonicSensor are values at same time.  
+
+// incase both front ultrasonicSensor and back ultrasonicSensor are values at same time.
 /*(void ultsensorConflict(){
- if((frontSensor.getDistance()&&backSensor.getDistance())<15){
+  if((frontSensor.getDistance()&&backSensor.getDistance())<15){
    car.stop();
    Serial.write("1");
    delay(100);
    Serial.flush();
- }else if ((frontSensor.getDistance()&&backSensor.getDistance())==0){
+  }else if ((frontSensor.getDistance()&&backSensor.getDistance())==0){
   Serial.write("0");
    car.setSpeed(50);
- }
-}*/
+  }
+  }*/
+
