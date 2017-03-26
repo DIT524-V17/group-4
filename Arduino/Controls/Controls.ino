@@ -66,7 +66,7 @@ void loop() {
   }
     else{ 
       if (curSpeed != 0){
-        car.setSpeed(0);
+        car.stop();
       }
     }
   } 
@@ -77,10 +77,10 @@ void loop() {
    }
     else {
       if (curSpeed != 0){
-        car.setSpeed(0);
+        car.stop();
       }
       else{
-        car.setSpeed(0);
+        car.stop();
       }
     }
   }
