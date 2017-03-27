@@ -1,8 +1,13 @@
 #include <Smartcar.h>
+#include <Wire.h>
+
 
 Odometer encoderLeft, encoderRight;
+SR04 frontSensor;
+SR04 backSensor;
+Gyroscope gyro;
 Car car;
-SR04 frontSensor, backSensor;
+
 
 const int TRIGGER1_PIN = 6; //D6
 const int ECHO1_PIN = 5; //D5
@@ -11,48 +16,125 @@ const int ECHO_PIN = 7;
 const int encoderLeftPin = 2;
 const int encoderRightPin = 3;
 
+const int fwSpeed =  70; //set forward speed
+const int bwSpeed = -70; //set backward speed
+const int rDegree =  75; //set degrees to turn right
+const int lDegree = -75; //set degrees to turn left
+char Direction = 'n';
+
+int frDistance;
+int baDistance;
 
 void setup() {
   Serial3.begin(9600);
-  Serial.begin(19200);
+  Serial.begin(9600);
+
+  gyro.attach();
   encoderLeft.attach(encoderLeftPin);
   encoderRight.attach(encoderRightPin);
   frontSensor.attach(TRIGGER_PIN, ECHO_PIN);
   backSensor.attach(TRIGGER1_PIN, ECHO1_PIN);
+
+  // start components
+  gyro.begin();
   encoderLeft.begin();
   encoderRight.begin();
-  car.begin(encoderLeft, encoderRight); //initialize the car using the encoders
+  car.begin(encoderLeft, encoderRight, gyro); //initialize the car using the encoders
+
+  //ini Ultrasonic distance meansurement as 0
+  frDistance = 0;
+  baDistance = 0;
+
 }
 
 
-void loop() {  
-   if (frontSensor.getMedianDistance() != 0 && frontSensor.getMedianDistance() < 15) {
-    car.setMotorSpeed(0,0);
-  } 
+void loop() {
+  frDistance = frontSensor.getDistance();
+  baDistance = backSensor.getDistance();
+  handleInput();
 
-   if(backSensor.getMedianDistance() !=0 && backSensor.getMedianDistance() <15) {
-    car.setMotorSpeed(0,0);
+
+  int curSpeed = car.getSpeed(); // read the current speed of car
+  if (curSpeed == 0) {
+    Direction = 'n';
+  }
+
+  if ( NoObstacle(frDistance) == false && Direction != 'b' && Direction != 'n') {
+    if (frDistance > 20 && frDistance == 0){
+    car.setSpeed(fwSpeed);
+  }
+    else{ 
+      if (curSpeed != 0){
+        car.stop();
+      }
+    }
+  } 
+  curSpeed = car.getSpeed(); 
+  if (NoObstacle(baDistance) == false && Direction == 'b') {
+    if (baDistance > 20 && baDistance == 0){
+    car.setSpeed(bwSpeed);
    }
-   
-  if(Serial3.available()){
-    char input = Serial3.read(); //read everything that has been received so far and log down the last entry
-       Serial.println(input);
-      if(input == 'f'){
-        car.setMotorSpeed(50,50);
-      } 
-      if(input == 'b'){
-        car.setMotorSpeed(-50,-50);
+    else {
+      if (curSpeed != 0){
+        car.stop();
       }
-      if(input == 's'){
-        car.setMotorSpeed(0,0);
-    }
-      if(input == 'l'){
-        car.setMotorSpeed(0,50);
+      else{
+        car.stop();
       }
-      if(input == 'r'){
-        car.setMotorSpeed(50,0);
-      } 
     }
+  }
+
+
+}
+
+
+void handleInput() {
+  if (Serial3.available()) {
+    char input;
+    while (Serial3.available()) input = Serial3.read(); //read everything that has been received so far and log down the last entry
+    switch (input) {
+      case 'f': //forward
+        Direction = 'f';
+        car.setSpeed(fwSpeed);
+        car.setAngle(0);
+        break;
+      case 'b': //backward
+        Direction = 'b';
+        car.setSpeed(bwSpeed);
+        car.setAngle(0);
+        break;
+      case 'l': //turn left
+        Direction = 'l';
+        car.setSpeed(fwSpeed);
+        car.setAngle(lDegree);
+        break;
+      case 'r': //turn right
+        Direction = 'r';
+        car.setSpeed(fwSpeed);
+        car.setAngle(rDegree);
+        break;
+      case 's': //stop car
+        car.setSpeed(0);
+        car.setAngle(0);
+        break;
+      default: //if there isn't any command
+        car.setSpeed(0);
+        car.setAngle(0);
     }
+  }
+}
+
+
+boolean NoObstacle(int distance) {
+  if (distance > 20) {
+    return true;
+  }
+  if (distance == 0) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
 
 
