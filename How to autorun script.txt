@@ -1,0 +1,39 @@
+## BYPASS LOGIN ##
+
+Step 1:
+Open up the terminal and edit the inittab file:
+
+sudo nano /etc/inittab
+
+Step 2:
+Navigate down to the following line and comment it out with a #:
+
+1:2345:respawn:/sbin/getty 115200 tty1
+becomes
+#1:2345:respawn:/sbin/getty 115200 tty1
+
+Step 3: Add login program to inittab:
+Add this line just below the line you just commented out:
+
+1:2345:respawn:/bin/login -f pi tty1 </dev/tty1 >/dev/tty1 2>&1
+
+Step 4: Save and exit.
+Press Ctrl+X to exit nano editor followed by Y to save the file, then press enter to confirm the filename.
+
+
+## RUNNING PROGRAM AUTOMATICALLY ##
+
+Step 1:
+Open up the terminal and edit the file /etc/profile:
+
+sudo nano /etc/profile
+
+Step 2:
+Add the following line to the end of the file:
+
+python /home/pi/your_programs_name.py
+
+replace the program name and path to the correct one of the program you like to run.
+
+Step 3: Save and exit.
+Press Ctrl+X to exit nano editor followed by Y to save the file.
