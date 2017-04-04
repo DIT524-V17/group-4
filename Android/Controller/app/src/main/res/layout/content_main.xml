@@ -31,58 +31,69 @@
         android:text="Disconnect"
         android:textColor="@android:color/background_light" />
 
-    <!--<Button-->
-        <!--android:id="@+id/button_forward"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/disconnect_btn"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="54dp"-->
-        <!--android:width="150dp"-->
-        <!--android:height="100dp"-->
-        <!--android:scaleX="1"-->
-        <!--android:scaleY="1"-->
-        <!--android:text="Forward" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/button_left"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="38dp"-->
-        <!--android:width="150dp"-->
-        <!--android:height="100dp"-->
-        <!--android:text="Left"-->
-        <!--android:layout_below="@+id/button_forward"-->
-        <!--android:layout_toLeftOf="@+id/button_forward"-->
-        <!--android:layout_toStartOf="@+id/button_forward" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/button_right"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignTop="@+id/button_left"-->
-        <!--android:layout_toEndOf="@+id/button_forward"-->
-        <!--android:layout_toRightOf="@+id/button_forward"-->
-        <!--android:width="150dp"-->
-        <!--android:height="100dp"-->
-        <!--android:text="Right" />-->
-
     <com.smartcar.team4.controller.JoystickView
         android:id="@+id/game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"/>
 
-    <!--<Button-->
-        <!--android:id="@+id/button_reverse"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/button_right"-->
-        <!--android:layout_marginTop="46dp"-->
-        <!--android:layout_toEndOf="@+id/button_left"-->
-        <!--android:layout_toRightOf="@+id/button_left"-->
-        <!--android:width="150dp"-->
-        <!--android:height="100dp"-->
-        <!--android:text="Reverse" />-->
+    <ToggleButton
+        android:id="@+id/button_toggleMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="ToggleButton"
+        android:textOff="D-Pad"
+        android:textOn="Joystick" />
+
+    <Button
+        android:id="@+id/button_reverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_right"
+        android:layout_marginTop="46dp"
+        android:layout_toEndOf="@+id/button_left"
+        android:layout_toRightOf="@+id/button_left"
+        android:width="150dp"
+        android:height="100dp"
+        android:text="Reverse" />
+
+    <Button
+    android:id="@+id/button_forward"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/disconnect_btn"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="54dp"
+    android:width="150dp"
+    android:height="100dp"
+    android:scaleX="1"
+    android:scaleY="1"
+    android:text="Forward" />
+
+    <Button
+    android:id="@+id/button_left"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="38dp"
+    android:width="150dp"
+    android:height="100dp"
+    android:text="Left"
+    android:layout_below="@+id/button_forward"
+    android:layout_toLeftOf="@+id/button_forward"
+    android:layout_toStartOf="@+id/button_forward" />
+
+    <Button
+    android:id="@+id/button_right"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@+id/button_left"
+    android:layout_toEndOf="@+id/button_forward"
+    android:layout_toRightOf="@+id/button_forward"
+    android:width="150dp"
+    android:height="100dp"
+    android:text="Right" />
 
 </RelativeLayout>
