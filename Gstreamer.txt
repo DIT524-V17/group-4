@@ -1,0 +1,33 @@
+git clone https://github.com/hzeller/gmrender-resurrect.git
+
+cd gmrender-resurrect
+
+sudo apt-get install autoconf automake libtool
+
+sudo apt-get install libupnp-dev libgstreamer0.10-dev \
+gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
+gstreamer0.10-plugins-bad gstreamer0.10-plugins-ugly \
+gstreamer0.10-pulseaudio gstreamer0.10-alsa
+
+./autogen.sh
+
+./configure
+
+make
+
+sudo make install
+
+sudo cp scripts/init.d/gmediarenderer /etc/init.d
+
+sudo update-rc.d gmediarenderer defaults
+
+sudo shutdown -r now
+
+..............
+
+ps aux|grep media
+
+alsamixer
+
+sudo alsactl store
+

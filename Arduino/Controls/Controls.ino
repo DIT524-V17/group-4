@@ -53,7 +53,9 @@ void loop() {
   baDistance = backSensor.getDistance();
   handleInput();
 
+  dancing();
 
+  
   int curSpeed = car.getSpeed(); // read the current speed of car
   if (curSpeed == 0) {
     Direction = 'n';
@@ -86,6 +88,32 @@ void loop() {
 
 
 }
+void dancing(){
+   if (Serial.available()) {
+    char input;
+    while (Serial.available()) input = Serial.read(); //read everything that has been received so far and log down the last entry
+    switch (input) {
+      case 'k': //kick
+        car.setMotorSpeed(10,10);
+        car.go(10);
+        car.rotate(3);
+        break;
+      case 's': //snare
+        car.setMotorSpeed(20,20);
+        car.go(-10);
+        car.rotate(50);
+        break;
+      case 'h': //hat
+        car.setMotorSpeed(15,15);
+        car.go(20);
+        car.rotate(10);
+        break;
+      default: //if there isn't any command
+        car.setSpeed(0);
+        car.setAngle(0);
+    }
+  }
+  }
 
 
 void handleInput() {
@@ -136,5 +164,4 @@ boolean NoObstacle(int distance) {
     return false;
   }
 }
-
 
