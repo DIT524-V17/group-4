@@ -61,7 +61,7 @@ void loop() {
     Direction = 'n';
   }
 
-  if ( NoObstacle(frDistance) == false && Direction != 'b' && Direction != 'n') {
+  if ( NoObstacle(frDistance) == false && Direction != 's' && Direction != 'n') {
     if (frDistance > 20 && frDistance == 0){
     car.setSpeed(fwSpeed);
   }
@@ -72,7 +72,7 @@ void loop() {
     }
   } 
   curSpeed = car.getSpeed(); 
-  if (NoObstacle(baDistance) == false && Direction == 'b') {
+  if (NoObstacle(baDistance) == false && Direction == 's') {
     if (baDistance > 20 && baDistance == 0){
     car.setSpeed(bwSpeed);
    }
@@ -93,20 +93,23 @@ void dancing(){
     char input;
     while (Serial.available()) input = Serial.read(); //read everything that has been received so far and log down the last entry
     switch (input) {
-      case 'k': //kick
-        car.setMotorSpeed(10,10);
+      case 'k': //forward
+        Direction = 'k';
+//        car.setMotorSpeed(10,10);
         car.go(10);
-        car.rotate(3);
+        car.rotate(360);
         break;
-      case 's': //snare
-        car.setMotorSpeed(20,20);
+      case 's': //backward
+        Direction = 's';
+//        car.setMotorSpeed(20,20);
         car.go(-10);
         car.rotate(50);
         break;
-      case 'h': //hat
-        car.setMotorSpeed(15,15);
+      case 'h': //turn left
+        Direction = 'h';
+//        car.setMotorSpeed(15,15);
         car.go(20);
-        car.rotate(10);
+        car.rotate(180);
         break;
       default: //if there isn't any command
         car.setSpeed(0);

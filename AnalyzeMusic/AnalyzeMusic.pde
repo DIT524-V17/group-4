@@ -1,15 +1,14 @@
 // @authors - Karanveer Singh , Simon Löfving , Anton Karlsson
-import processing.serial.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
+import processing.serial.*;
 
 Minim minim;
 AudioPlayer song;
 BeatDetect beat;
 BeatListener bl;
 Serial myPort;
-String myText = "";
-
+String input;
 
 float kickSize, snareSize, hatSize;
 
@@ -38,28 +37,28 @@ class BeatListener implements AudioListener
 
 void setup()
 {
-  size(512, 200, P3D);
+  size(512, 200);
   
   String portName = Serial.list()[0];
   myPort = new Serial(this, portName , 9600);
   myPort.bufferUntil('\n');
-   
-   
-  minim = new Minim(this);
   
+  minim = new Minim(this);
   song = minim.loadFile("safeslow.mp3", 1024);
+  
+   
   song.play();
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
   beat.setSensitivity(300);  
   kickSize = snareSize = hatSize = 16;
   bl = new BeatListener(beat, song);  
-  textFont(createFont("Helvetica", 16));
+//  textFont(createFont("Helvetica", 16));
   textAlign(CENTER);
   
 }
 
 void serialEvent(Serial myPort){
-  myText= myPort.readStringUntil('\n');
+  input = myPort.readStringUntil('\n');
 }
 
 void draw()
@@ -91,18 +90,19 @@ void draw()
     rect(rectW*lowBand, 0, (highBand-lowBand)*rectW, height);
   }
   
-  if ( beat.isKick() ){ 
-    kickSize = 32;
-    myPort.write('k');
+  if ( beat.isKick() ){
+  kickSize = 32;
+  myPort.write('k');
 }
-  if ( beat.isSnare() ){ 
+  if ( beat.isSnare() ){
   snareSize = 32;
   myPort.write('s');
 }
-  if ( beat.isHat() ){ 
+  if ( beat.isHat() ){
   hatSize = 32;
   myPort.write('h');
 }
+
   
   fill(255);
     
