@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.smartcar.team4.controller.ControllerActivity">
+
+
+
+    <Button
+        android:id="@+id/button_reverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="150dp"
+        android:height="90dp"
+        android:text="Reverse"
+        android:layout_below="@+id/button_right"
+        android:layout_toRightOf="@+id/button_left"
+        android:layout_toEndOf="@+id/button_left"
+        android:visibility="gone"/>
+
+
+
+    <Button
+        android:id="@+id/button_forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="150dp"
+        android:height="90dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:text="Forward"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="150dp"
+        android:height="90dp"
+        android:text="Left"
+        android:layout_below="@+id/button_forward"
+        android:layout_toLeftOf="@+id/button_forward"
+        android:layout_toStartOf="@+id/button_forward"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="150dp"
+        android:height="90dp"
+        android:text="Right"
+        android:layout_below="@+id/button_forward"
+        android:layout_toRightOf="@+id/button_forward"
+        android:layout_toEndOf="@+id/button_forward"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/disconnect_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_red_dark"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Disconnect"
+        android:textColor="@android:color/background_light"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+
+
+    <com.smartcar.team4.controller.JoystickView
+        android:id="@+id/game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <ToggleButton
+        android:id="@+id/button_toggleMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton"
+        android:textOff="D-Pad"
+        android:textOn="Joystick"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+</RelativeLayout>

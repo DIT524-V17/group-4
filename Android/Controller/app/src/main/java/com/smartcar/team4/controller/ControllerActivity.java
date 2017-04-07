@@ -1,31 +1,26 @@
 package com.smartcar.team4.controller;
 
-import android.os.Bundle;
+import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothSocket;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.bluetooth.BluetoothSocket;
-import android.content.Intent;
 import android.widget.Toast;
-import android.app.ProgressDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.os.AsyncTask;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
 import java.util.UUID;
-import com.smartcar.team4.controller.JoystickView.OnJoystickMoveListener;
 
 
-public class MainActivity extends AppCompatActivity {
+public class ControllerActivity extends AppCompatActivity {
 
     private JoystickView joystick;
+    TextView test;
     Button btnDis;
     String address = null;
     private ProgressDialog progress;
@@ -39,12 +34,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Recieve the adress from Bluetooth class
-        Intent newint = getIntent();
-        address = newint.getStringExtra(Bluetooth.EXTRA_ADDRESS);
-
-        //Calls the bluetooth connection method.
-        new ConnectToBt().execute();
+        setContentView(R.layout.activity_controller);
 
         //Get disconnect button
         btnDis = (Button)findViewById(R.id.disconnect_btn);
@@ -57,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
                 Disconnect(); //close connection
             }
         });
-//
+
         // Joystick
         joystick = (JoystickView) findViewById(R.id.game);
-        joystick.setOnJoystickMoveListener(new OnJoystickMoveListener() {
+        joystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
 
             @Override
             public void onValueChanged(int angle, int power, int direction) {
@@ -95,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
 
-//
-//
-         // Button for forward
+        // Button for reverse
         final Button buttonForward = (Button) findViewById(R.id.button_forward);
         buttonForward.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -173,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         // Change from joystick to analog controller
         ToggleButton toggle = (ToggleButton) findViewById(R.id.button_toggleMode);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -195,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
 
+    }
 
 
     private void goForward() {
@@ -289,7 +278,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    //Method for disconnect the bluetooth connection.
     private void Disconnect(){
         if (btSocket!=null){
             try {
@@ -302,77 +290,4 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    //Bluetooth connection method.
-    private class ConnectToBt extends AsyncTask<Void, Void, Void>
-    {
-        private boolean success = true;
-
-        @Override
-        protected void onPreExecute()
-        {
-            progress = ProgressDialog.show(MainActivity.this, "Connecting...", "...");
-        }
-
-        @Override
-        protected Void doInBackground(Void... devices)
-        {
-            try
-            {
-                if (btSocket == null || !isBtConnected)
-                {
-                    myBluetooth = BluetoothAdapter.getDefaultAdapter();
-                    BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);
-                    btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);
-                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-                    btSocket.connect();
-                }
-            }
-            catch (IOException e)
-            {
-                success = false;
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void result)
-        {
-            super.onPostExecute(result);
-
-            if (!success)
-            {
-                Toast.makeText(getApplicationContext(), "Connection Failed. Try again.", Toast.LENGTH_LONG).show();
-                finish();
-            }
-            else
-            {
-                Toast.makeText(getApplicationContext(), "Connected!", Toast.LENGTH_LONG).show();
-                isBtConnected = true;
-            }
-            progress.dismiss();
-        }
-
-
-    }
 }
