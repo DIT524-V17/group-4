@@ -161,7 +161,7 @@ public class ControllerActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // D-Pad enabled
-                    joystick.setVisibility(View.GONE);
+                    joystick.setVisibility(View.INVISIBLE);
                     buttonForward.setVisibility(View.VISIBLE);
                     buttonLeft.setVisibility(View.VISIBLE);
                     buttonRight.setVisibility(View.VISIBLE);
@@ -169,15 +169,13 @@ public class ControllerActivity extends AppCompatActivity {
                 } else {
                     // Joystick enabled
                     joystick.setVisibility(View.VISIBLE);
-                    buttonForward.setVisibility(View.GONE);
-                    buttonLeft.setVisibility(View.GONE);
-                    buttonRight.setVisibility(View.GONE);
-                    buttonReverse.setVisibility(View.GONE);
+                    buttonForward.setVisibility(View.INVISIBLE);
+                    buttonLeft.setVisibility(View.INVISIBLE);
+                    buttonRight.setVisibility(View.INVISIBLE);
+                    buttonReverse.setVisibility(View.INVISIBLE);
                 }
             }
         });
-        toggle.setVisibility(View.INVISIBLE);
-
     }
 
 

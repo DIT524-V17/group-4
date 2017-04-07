@@ -19,7 +19,7 @@
         android:width="150dp"
         android:height="100dp"
         android:text="Reverse"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/button_forward"
@@ -33,7 +33,7 @@
         android:scaleX="1"
         android:scaleY="1"
         android:text="Forward"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/button_left"
@@ -46,7 +46,7 @@
         android:layout_below="@+id/button_forward"
         android:layout_toLeftOf="@+id/button_forward"
         android:layout_toStartOf="@+id/button_forward"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/button_right"
@@ -58,7 +58,7 @@
         android:width="150dp"
         android:height="100dp"
         android:text="Right"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 
 
     <com.smartcar.team4.controller.JoystickView
