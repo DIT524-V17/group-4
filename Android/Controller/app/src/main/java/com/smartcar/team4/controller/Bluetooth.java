@@ -93,7 +93,7 @@ public class Bluetooth extends AppCompatActivity {
             String address = info.substring(info.length() - 17);
 
 
-            Intent nextActivity = new Intent(Bluetooth.this, MainActivity.class);
+            Intent nextActivity = new Intent(Bluetooth.this, MenuActivity.class);
 
             nextActivity.putExtra(EXTRA_ADDRESS, address);
             startActivity(nextActivity);

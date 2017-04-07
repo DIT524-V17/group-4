@@ -25,7 +25,7 @@ public class MenuActivity extends AppCompatActivity {
     String address = null;
     private ProgressDialog progress;
     BluetoothAdapter myBluetooth = null;
-    BluetoothSocket btSocket = null;
+    static BluetoothSocket btSocket = null;
     private boolean isBtConnected = false;
     //Not sure if the UUID is correct..
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -35,7 +35,21 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent newint = getIntent();
+        address = newint.getStringExtra(Bluetooth.EXTRA_ADDRESS);
+        //Calls the bluetooth connection method.
+
+        //setContentView(R.layout.activity_menu);
         setContentView(R.layout.activity_menu);
+
+
+        final Button button_connect = (Button) findViewById(R.id.button_connectToBt);
+        button_connect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ConnectToBt().execute();
+            }
+        });
 
 
         Button button_controller = (Button) findViewById(R.id.button_launchController);
@@ -58,46 +72,6 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        Button button_connect = (Button) findViewById(R.id.button_connectToBt);
-        button_connect.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-//                Recieve the adress from Bluetooth class
-            Intent newint = getIntent();
-                address = newint.getStringExtra(Bluetooth.EXTRA_ADDRESS);
-
-                //Calls the bluetooth connection method.
-                new MenuActivity.ConnectToBt().execute();
-
-            }
-        });
-
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     //Bluetooth connection method.
@@ -150,5 +124,16 @@ public class MenuActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void disconnect(){
+        if (btSocket!=null){
+            try {
+                btSocket.close();
+            }
+            catch (IOException e){
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

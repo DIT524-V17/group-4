@@ -2,7 +2,10 @@ package com.smartcar.team4.controller;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -25,7 +28,7 @@ public class ControllerActivity extends AppCompatActivity {
     String address = null;
     private ProgressDialog progress;
     BluetoothAdapter myBluetooth = null;
-    BluetoothSocket btSocket = null;
+    BluetoothSocket btSocket = MenuActivity.btSocket;
     private boolean isBtConnected = false;
     //Not sure if the UUID is correct..
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -34,19 +37,9 @@ public class ControllerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_controller);
 
-        //Get disconnect button
-        btnDis = (Button)findViewById(R.id.disconnect_btn);
-
-        btnDis.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Disconnect(); //close connection
-            }
-        });
 
         // Joystick
         joystick = (JoystickView) findViewById(R.id.game);
@@ -183,7 +176,7 @@ public class ControllerActivity extends AppCompatActivity {
                 }
             }
         });
-
+        toggle.setVisibility(View.INVISIBLE);
 
     }
 
