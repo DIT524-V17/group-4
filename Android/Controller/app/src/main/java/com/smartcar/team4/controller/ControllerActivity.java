@@ -8,10 +8,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -21,7 +24,8 @@ import java.util.UUID;
 
 
 public class ControllerActivity extends AppCompatActivity {
-
+    RadioGroup group;
+    TextView text;
     private JoystickView joystick;
     TextView test;
     Button btnDis;
@@ -33,12 +37,34 @@ public class ControllerActivity extends AppCompatActivity {
     //Not sure if the UUID is correct..
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_controller);
+
+        group = (RadioGroup) findViewById(R.id.RadioGroup);
+        text = (TextView) findViewById(R.id.textView5);
+        group.setVisibility(View.INVISIBLE);
+        text.setVisibility(View.INVISIBLE);
+        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedID){
+                RadioButton rb = (RadioButton) group.findViewById(checkedID);
+                switch (rb.getId()){
+                    case R.id.radioGroup1:
+                        // Slow speed
+                        break;
+                    case R.id.radioGroup2:
+                        // medium speed
+                        break;
+                    case R.id.radioGroup3:
+                        // ultrasonic speed
+                        break;
+                }
+
+            }
+        });
 
 
         // Joystick
@@ -155,6 +181,7 @@ public class ControllerActivity extends AppCompatActivity {
         });
 
 
+
         // Change from joystick to analog controller
         ToggleButton toggle = (ToggleButton) findViewById(R.id.button_toggleMode);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -167,6 +194,8 @@ public class ControllerActivity extends AppCompatActivity {
                     buttonLeft.setVisibility(View.VISIBLE);
                     buttonRight.setVisibility(View.VISIBLE);
                     buttonReverse.setVisibility(View.VISIBLE);
+                    group.setVisibility(View.VISIBLE);
+                    text.setVisibility(View.VISIBLE);
                 } else {
                     // Joystick enabled
                     Jpad();
@@ -175,6 +204,8 @@ public class ControllerActivity extends AppCompatActivity {
                     buttonLeft.setVisibility(View.INVISIBLE);
                     buttonRight.setVisibility(View.INVISIBLE);
                     buttonReverse.setVisibility(View.INVISIBLE);
+                    group.setVisibility(View.INVISIBLE);
+                    text.setVisibility(View.INVISIBLE);
                 }
             }
         });

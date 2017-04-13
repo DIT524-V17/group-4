@@ -54,6 +54,7 @@ public class SongPicker extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // Send file to bluetooth
+
             }
         });
     }
