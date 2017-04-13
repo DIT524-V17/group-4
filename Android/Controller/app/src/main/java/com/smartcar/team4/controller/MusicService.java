@@ -12,12 +12,15 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MusicService extends Service {
 
     private String[] musicDir = new String[]{Environment.getExternalStorageDirectory().getAbsolutePath()+"/Music/safeslow.mp3",
-            Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music/123.mp3"};
+            Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music/led.mp3"};
     private int musicIndex = 1;
 
     public final IBinder binder = new MyBinder();
@@ -26,6 +29,7 @@ public class MusicService extends Service {
             return MusicService.this;
         }
     }
+
     public static MediaPlayer mp = new MediaPlayer();
     public MusicService() {
         try {
@@ -94,6 +98,7 @@ public class MusicService extends Service {
         mp.release();
         super.onDestroy();
     }
+
 
     /**
      * onBind and Service 。

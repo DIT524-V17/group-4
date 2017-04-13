@@ -1,5 +1,4 @@
 #include <Smartcar.h>
-
 #include <Wire.h>
 
 
@@ -48,73 +47,161 @@ void setup() {
 
 }
 
+void loop(){
 
-void loop() {
   frDistance = frontSensor.getDistance();
   baDistance = backSensor.getDistance();
-  handleInput();
-
-
-  int curSpeed = car.getSpeed(); // read the current speed of car
-  if (curSpeed == 0) {
-    Direction = 'n';
+  
+  if (NoObstacle(baDistance) == false && NoObstacle(frDistance) == false) {
+    car.stop();
   }
-
-  if ( NoObstacle(frDistance) == false && Direction != 'b' && Direction != 'n') {
-    if (frDistance > 20 && frDistance == 0){
-    car.setSpeed(fwSpeed);
-  }
-    else{ 
-      if (curSpeed != 0){
-        car.stop();
-      }
+  else if(NoObstacle(baDistance) == false){
+    if(NoObstacle(frDistance) == true){
+      handleInput();
     }
-  } 
-  curSpeed = car.getSpeed(); 
-  if (NoObstacle(baDistance) == false && Direction == 'b') {
-    if (baDistance > 20 && baDistance == 0){
-    car.setSpeed(bwSpeed);
-   }
-    else {
-      if (curSpeed != 0){
-        car.stop();
-      }
-      else{
-        car.stop();
-      }
+    else{
+      car.stop();
     }
   }
-
-
-  //ultsensorConflict();
-
+  
+  if(NoObstacle(frDistance) == false){
+    if(NoObstacle(baDistance) == true){
+      handleInput();
+    }
+    else{
+      car.stop();
+    }
+  }
+  else{
+    dancing();
+    handleInput();
+  }
+   
 }
+
+  void dancing(){
+   if (Serial.available()) {
+    char input;
+    frDistance = frontSensor.getDistance();
+    baDistance = backSensor.getDistance();
+    
+    while (Serial.available()) input = Serial.read(); //read everything that has been received so far and log down the last entry
+    switch (input) {
+      case 'k': //forward
+        Direction = 'k';
+//        car.setMotorSpeed(10,10);
+          car.go(10);
+          car.rotate(-180);
+          car.go(-15);
+          car.rotate(80);
+        break;
+      case 's': //backward
+        Direction = 's';
+//        car.setMotorSpeed(20,20);
+        car.go(-10);
+        car.rotate(60);
+        car.go(20);
+        car.rotate(-60);
+        break;
+      case 'h': //turn left
+        Direction = 'h';
+//        car.setMotorSpeed(0,70);
+        car.go(20);
+       car.rotate(90);
+       car.go(5);
+       car.rotate(-90);
+        break;
+      default: //if there isn't any command
+        car.setSpeed(0);
+        car.setAngle(0);
+    }
+  }
+  }
 
 
 void handleInput() {
   if (Serial3.available()) {
     char input;
+     frDistance = frontSensor.getDistance();
+     baDistance = backSensor.getDistance();
+     
     while (Serial3.available()) input = Serial3.read(); //read everything that has been received so far and log down the last entry
     switch (input) {
       case 'f': //forward
-        Direction = 'f';
-        car.setSpeed(fwSpeed);
-        car.setAngle(0);
+       // Direction = 'f';
+        if(NoObstacle(frDistance) == false) {
+          car.setSpeed(0);
+        }
+        else{
+          car.setSpeed(fwSpeed);
+          car.setAngle(0);
+        }
         break;
       case 'b': //backward
-        Direction = 'b';
-        car.setSpeed(bwSpeed);
-        car.setAngle(0);
+       // Direction = 'b';
+        if(NoObstacle(baDistance) == false) {
+          car.setSpeed(0);
+        }
+        else{
+          car.setSpeed(bwSpeed);
+          car.setAngle(0);
+        }
         break;
       case 'l': //turn left
-        Direction = 'l';
-        car.setSpeed(fwSpeed);
-        car.setAngle(lDegree);
+       // Direction = 'l';
+        if(NoObstacle(frDistance) == false) {
+          car.setSpeed(0);
+        }
+        else{
+          car.setSpeed(fwSpeed);
+          car.setAngle(lDegree);
+        }
         break;
       case 'r': //turn right
-        Direction = 'r';
-        car.setSpeed(fwSpeed);
-        car.setAngle(rDegree);
+       // Direction = 'r';
+        if(NoObstacle(frDistance) == false) {
+          car.setSpeed(0);
+        }
+        else{
+          car.setSpeed(fwSpeed);
+          car.setAngle(rDegree);
+        }
+        break;
+      case 'q': //turn left front
+       // Direction = 'q';
+       if(NoObstacle(frDistance) == false) {
+          car.setSpeed(0);
+        }
+       else{
+        car.setMotorSpeed(35,fwSpeed);
+       }
+        break;
+      case 'e': //turn right front
+       // Direction = 'e';
+       if(NoObstacle(frDistance) == false) {
+          car.setSpeed(0);
+        }
+       else{
+        car.setMotorSpeed(fwSpeed, 35);
+       }
+        break;
+      case 'z': //turn left bottom
+       // Direction = 'z';
+        if(NoObstacle(frDistance) == false) {
+          car.setSpeed(0);
+        }
+       else{
+          car.setMotorSpeed(-35, bwSpeed);
+       }
+        break;
+      case 'c': //turn right bottom
+       // Direction = 'c';
+        if(NoObstacle(frDistance) == false) {
+          car.setSpeed(0);
+        }
+       else{
+          car.setMotorSpeed(bwSpeed, -35);
+       }
         break;
       case 's': //stop car
         car.setSpeed(0);
@@ -139,18 +226,4 @@ boolean NoObstacle(int distance) {
     return false;
   }
 }
-
-
-// incase both front ultrasonicSensor and back ultrasonicSensor are values at same time.
-/*(void ultsensorConflict(){
-  if((frontSensor.getDistance()&&backSensor.getDistance())<15){
-   car.stop();
-   Serial.write("1");
-   delay(100);
-   Serial.flush();
-  }else if ((frontSensor.getDistance()&&backSensor.getDistance())==0){
-  Serial.write("0");
-   car.setSpeed(50);
-  }
-  }*/
 

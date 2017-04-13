@@ -2,13 +2,19 @@ package com.smartcar.team4.controller;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -18,35 +24,48 @@ import java.util.UUID;
 
 
 public class ControllerActivity extends AppCompatActivity {
-
+    RadioGroup group;
+    TextView text;
     private JoystickView joystick;
     TextView test;
     Button btnDis;
     String address = null;
     private ProgressDialog progress;
     BluetoothAdapter myBluetooth = null;
-    BluetoothSocket btSocket = null;
+    BluetoothSocket btSocket = MenuActivity.btSocket;
     private boolean isBtConnected = false;
     //Not sure if the UUID is correct..
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_controller);
 
-        //Get disconnect button
-        btnDis = (Button)findViewById(R.id.disconnect_btn);
-
-        btnDis.setOnClickListener(new View.OnClickListener()
-        {
+        group = (RadioGroup) findViewById(R.id.RadioGroup);
+        text = (TextView) findViewById(R.id.textView5);
+        group.setVisibility(View.INVISIBLE);
+        text.setVisibility(View.INVISIBLE);
+        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
-            public void onClick(View v)
-            {
-                Disconnect(); //close connection
+            public void onCheckedChanged(RadioGroup group, int checkedID){
+                RadioButton rb = (RadioButton) group.findViewById(checkedID);
+                switch (rb.getId()){
+                    case R.id.radioGroup1:
+                        // Slow speed
+                        break;
+                    case R.id.radioGroup2:
+                        // medium speed
+                        break;
+                    case R.id.radioGroup3:
+                        // ultrasonic speed
+                        break;
+                }
+
             }
         });
+
 
         // Joystick
         joystick = (JoystickView) findViewById(R.id.game);
@@ -162,31 +181,55 @@ public class ControllerActivity extends AppCompatActivity {
         });
 
 
+
         // Change from joystick to analog controller
         ToggleButton toggle = (ToggleButton) findViewById(R.id.button_toggleMode);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // D-Pad enabled
-                    joystick.setVisibility(View.GONE);
+                    Dpad();
+                    joystick.setVisibility(View.INVISIBLE);
                     buttonForward.setVisibility(View.VISIBLE);
                     buttonLeft.setVisibility(View.VISIBLE);
                     buttonRight.setVisibility(View.VISIBLE);
                     buttonReverse.setVisibility(View.VISIBLE);
+                    group.setVisibility(View.VISIBLE);
+                    text.setVisibility(View.VISIBLE);
                 } else {
                     // Joystick enabled
+                    Jpad();
                     joystick.setVisibility(View.VISIBLE);
-                    buttonForward.setVisibility(View.GONE);
-                    buttonLeft.setVisibility(View.GONE);
-                    buttonRight.setVisibility(View.GONE);
-                    buttonReverse.setVisibility(View.GONE);
+                    buttonForward.setVisibility(View.INVISIBLE);
+                    buttonLeft.setVisibility(View.INVISIBLE);
+                    buttonRight.setVisibility(View.INVISIBLE);
+                    buttonReverse.setVisibility(View.INVISIBLE);
+                    group.setVisibility(View.INVISIBLE);
+                    text.setVisibility(View.INVISIBLE);
                 }
             }
         });
-
-
     }
 
+    private void Jpad() {
+        if(btSocket != null ){
+            try{
+                btSocket.getOutputStream().write("j".getBytes());
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void Dpad() {
+        if(btSocket != null ){
+            try{
+                btSocket.getOutputStream().write("p".getBytes());
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
 
     private void goForward() {
         if(btSocket != null ){
