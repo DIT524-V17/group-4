@@ -161,6 +161,7 @@ public class ControllerActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // D-Pad enabled
+                    Dpad();
                     joystick.setVisibility(View.INVISIBLE);
                     buttonForward.setVisibility(View.VISIBLE);
                     buttonLeft.setVisibility(View.VISIBLE);
@@ -168,6 +169,7 @@ public class ControllerActivity extends AppCompatActivity {
                     buttonReverse.setVisibility(View.VISIBLE);
                 } else {
                     // Joystick enabled
+                    Jpad();
                     joystick.setVisibility(View.VISIBLE);
                     buttonForward.setVisibility(View.INVISIBLE);
                     buttonLeft.setVisibility(View.INVISIBLE);
@@ -178,6 +180,25 @@ public class ControllerActivity extends AppCompatActivity {
         });
     }
 
+    private void Jpad() {
+        if(btSocket != null ){
+            try{
+                btSocket.getOutputStream().write("j".getBytes());
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void Dpad() {
+        if(btSocket != null ){
+            try{
+                btSocket.getOutputStream().write("p".getBytes());
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
 
     private void goForward() {
         if(btSocket != null ){

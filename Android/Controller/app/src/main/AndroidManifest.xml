@@ -4,8 +4,9 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -22,13 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuActivity"/>
-
+        <activity android:name=".MenuActivity" />
         <activity
             android:name=".DancingActivity"
             android:label="@string/title_activity_dancing"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ControllerActivity"></activity>
+        <activity android:name=".ControllerActivity" />
+        <activity android:name=".MusicPlayer"></activity>
     </application>
 
 </manifest>

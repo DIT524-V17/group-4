@@ -67,7 +67,7 @@ public class MenuActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(MenuActivity.this, DancingActivity.class);
+                Intent myIntent = new Intent(MenuActivity.this, MusicPlayer.class);
                 MenuActivity.this.startActivity(myIntent);
             }
         });

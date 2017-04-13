@@ -12,12 +12,15 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MusicService extends Service {
 
     private String[] musicDir = new String[]{Environment.getExternalStorageDirectory().getAbsolutePath()+"/Music/safeslow.mp3",
-            Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music/123.mp3"};
+            Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music/led.mp3"};
     private int musicIndex = 1;
 
     public final IBinder binder = new MyBinder();
@@ -26,6 +29,45 @@ public class MusicService extends Service {
             return MusicService.this;
         }
     }
+
+
+//    ArrayList<HashMap<String,String>> SongList=getPlayList(Environment.getExternalStorageDirectory().getAbsolutePath());
+//        if(songList!=null){
+//        for(int i=0;i<SongList.size();i++){
+//            String fileName=SongList.get(i).get("file_name");
+//            String filePath=SongList.get(i).get("file_path");
+//            //here you will get list of file name and file path that present in your device
+//            Log.d("file details "," name ="+fileName +" path = "+filePath);
+//        }
+//    }
+
+    public ArrayList<HashMap<String,String>> getPlayList(String rootPath) {
+        ArrayList<HashMap<String,String>> fileList = new ArrayList<>();
+
+
+        try {
+            File rootFolder = new File(rootPath);
+            File[] files = rootFolder.listFiles(); //here you will get NPE if directory doesn't contains  any file,handle it like this.
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    if (getPlayList(file.getAbsolutePath()) != null) {
+                        fileList.addAll(getPlayList(file.getAbsolutePath()));
+                    } else {
+                        break;
+                    }
+                } else if (file.getName().endsWith(".mp3")) {
+                    HashMap<String, String> song = new HashMap<>();
+                    song.put("file_path", file.getAbsolutePath());
+                    song.put("file_name", file.getName());
+                    fileList.add(song);
+                }
+            }
+            return fileList;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public static MediaPlayer mp = new MediaPlayer();
     public MusicService() {
         try {
@@ -94,6 +136,7 @@ public class MusicService extends Service {
         mp.release();
         super.onDestroy();
     }
+
 
     /**
      * onBind and Service 。
