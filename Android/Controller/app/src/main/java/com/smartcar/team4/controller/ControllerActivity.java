@@ -2,13 +2,9 @@ package com.smartcar.team4.controller;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -53,13 +49,13 @@ public class ControllerActivity extends AppCompatActivity {
                 RadioButton rb = (RadioButton) group.findViewById(checkedID);
                 switch (rb.getId()){
                     case R.id.radioGroup1:
-                        // Slow speed
+                        goSlow();
                         break;
                     case R.id.radioGroup2:
-                        // medium speed
+                        goMedium();
                         break;
                     case R.id.radioGroup3:
-                        // ultrasonic speed
+                        goFast();
                         break;
                 }
 
@@ -315,6 +311,36 @@ public class ControllerActivity extends AppCompatActivity {
         if(btSocket != null){
             try{
                 btSocket.getOutputStream().write("s".toString().getBytes());
+            } catch(IOException f){
+                f.printStackTrace();
+            }
+        }
+    }
+
+    private void goSlow(){
+        if(btSocket != null){
+            try{
+                btSocket.getOutputStream().write("1".toString().getBytes());
+            } catch(IOException f){
+                f.printStackTrace();
+            }
+        }
+    }
+
+    private void goMedium(){
+        if(btSocket != null){
+            try{
+                btSocket.getOutputStream().write("2".toString().getBytes());
+            } catch(IOException f){
+                f.printStackTrace();
+            }
+        }
+    }
+
+    private void goFast(){
+        if(btSocket != null){
+            try{
+                btSocket.getOutputStream().write("3".toString().getBytes());
             } catch(IOException f){
                 f.printStackTrace();
             }

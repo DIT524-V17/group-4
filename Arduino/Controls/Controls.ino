@@ -16,10 +16,10 @@ const int ECHO_PIN = 7;
 const int encoderLeftPin = 2;
 const int encoderRightPin = 3;
 
-const int fwSpeed =  70; //set forward speed
-const int bwSpeed = -70; //set backward speed
-const int rDegree =  75; //set degrees to turn right
-const int lDegree = -75; //set degrees to turn left
+int fwSpeed =  70; //set forward speed
+int bwSpeed = -70; //set backward speed
+int rDegree =  75; //set degrees to turn right
+int lDegree = -75; //set degrees to turn left
 char Direction = 'n';
 
 int frDistance;
@@ -121,11 +121,27 @@ void loop(){
 
 void handleInput() {
   if (Serial3.available()) {
-    char input;
+    int input;
      frDistance = frontSensor.getDistance();
      baDistance = backSensor.getDistance();
      
     while (Serial3.available()) input = Serial3.read(); //read everything that has been received so far and log down the last entry
+    if(input == '1'){
+       fwSpeed =  35; //set forward speed
+       bwSpeed = -35; //set backward speed
+       rDegree =  35; //set degrees to turn right
+       lDegree = -35;
+    } else if( input == '2'){
+       fwSpeed =  50; //set forward speed
+       bwSpeed = -50; //set backward speed
+       rDegree =  50; //set degrees to turn right
+       lDegree = -50;
+    } else if(input == '3'){
+       fwSpeed =  75; //set forward speed
+       bwSpeed = -75; //set backward speed
+       rDegree =  75; //set degrees to turn right
+       lDegree = -75;
+    }
     switch (input) {
       case 'f': //forward
        // Direction = 'f';
