@@ -1,5 +1,6 @@
 package com.smartcar.team4.controller;
 
+import android.bluetooth.BluetoothAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.content.ServiceConnection;
 import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -23,10 +26,11 @@ import android.util.Log;
 
 public class DancingActivity extends AppCompatActivity implements View.OnClickListener {
 
+
     private MusicService musicService;
     private SeekBar seekBar;
     private TextView musicStatus, musicTime;
-    private Button btnPlayOrPause, btnStop, btnQuit;
+    private Button btnPlayOrPause, btnStop, btnQuit,btnSend;
     private SimpleDateFormat time = new SimpleDateFormat("m:ss");
     private ServiceConnection sc = new ServiceConnection() { // define the format of playing time display        @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -115,7 +119,19 @@ public class DancingActivity extends AppCompatActivity implements View.OnClickLi
         super.onResume();
         Log.d("hint", "handler post runnable");
     }
+    private void sendMusic(){
+        //File exportPath = new File(Environment.getExternalStorgePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "123.mp3");
+        //set the music folder path, or here we can set as Uri songUri = Uri.fromFile(xxx)
+        Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Intent intent = new Intent(Intent.ACTION_SEND);
 
+        intent.putExtra(Intent.EXTRA_TEXT,"Hello");
+        intent.putExtra(Intent.EXTRA_STREAM,songUri);
+        intent.setType("audio/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setPackage("com.android.bluetooth");
+        startActivity(Intent.createChooser(intent,"sendMusic"));
+    }
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.BtnPlayorPause:
@@ -139,6 +155,9 @@ public class DancingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btnNext:
                 musicService.nextMusic();
+                break;
+            case R.id.btnSend:
+                sendMusic();
                 break;
             default:
                 break;
