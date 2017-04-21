@@ -1,6 +1,7 @@
 package com.smartcar.team4.controller;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class SongPicker extends AppCompatActivity {
     private static final int MY_PERMISSION_REQUEST = 1;
     ArrayList<String> arrayList;
+    ArrayList<String> arrayListDisplay;
     ListView listView;
     ArrayAdapter<String> adapter;
 
@@ -46,13 +48,23 @@ public class SongPicker extends AppCompatActivity {
     public void dostuff() {
         listView = (ListView) findViewById(R.id.listView);
         arrayList = new ArrayList<>();
+        arrayListDisplay = new ArrayList<>();
         getMusic();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, arrayList);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, arrayListDisplay);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Uri songUri = Uri.parse("file:///" + arrayList.get(i));
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+
+                    intent.putExtra(Intent.EXTRA_TEXT,"Hello");
+                    intent.putExtra(Intent.EXTRA_STREAM,songUri);
+                    intent.setType("audio/*");
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.setPackage("com.android.bluetooth");
+                    startActivity(Intent.createChooser(intent,"sendMusic"));
                 // Send file to bluetooth
 
             }
@@ -68,11 +80,14 @@ public class SongPicker extends AppCompatActivity {
         if (songCursor != null && songCursor.moveToFirst()) {
             int songTitle = songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int songArtist = songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+            int songLocation = songCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
             do {
                 String currentTitle = songCursor.getString(songTitle);
                 String currentArtist = songCursor.getString(songArtist);
-                arrayList.add(currentTitle + "\n" + currentArtist);
+                String currentLocation = songCursor.getString(songLocation);
+                arrayList.add(currentLocation);
+                arrayListDisplay.add(currentTitle + "\n" + currentArtist);
             } while (songCursor.moveToNext());
         }
     }
