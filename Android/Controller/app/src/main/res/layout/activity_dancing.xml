@@ -71,12 +71,6 @@
             android:id="@+id/btnNext"
             android:text="@string/btnNext"
             android:onClick="onClick"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnSend"
-            android:text="SEND"
-            android:onClick="onClick"/>
     </LinearLayout>
 
     <ListView

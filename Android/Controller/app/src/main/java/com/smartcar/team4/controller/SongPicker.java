@@ -53,18 +53,23 @@ public class SongPicker extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, arrayListDisplay);
         listView.setAdapter(adapter);
 
+        // Define a listener that responds to clicks on a song in the song ListView
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Uri songUri = Uri.parse("file:///" + arrayList.get(i));
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-
-                    intent.putExtra(Intent.EXTRA_TEXT,"Hello");
-                    intent.putExtra(Intent.EXTRA_STREAM,songUri);
-                    intent.setType("audio/*");
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intent.setPackage("com.android.bluetooth");
-                    startActivity(Intent.createChooser(intent,"sendMusic"));
+            /*
+             * When a filename in the ListView is clicked, get its
+             * content URI and send it to the requesting app
+             */
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
+                Uri songUri = Uri.parse("file:///" + arrayList.get(position));
+                Intent musicIntent = new Intent();
+                musicIntent.setAction(Intent.ACTION_SEND);
+                musicIntent.putExtra(Intent.EXTRA_TEXT, "Enjoy these awesome songs");
+                musicIntent.putExtra(Intent.EXTRA_STREAM, songUri);
+                musicIntent.setType("audio/*");
+                musicIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // Grant temporary read permission to the content  URI
+                musicIntent.setPackage("com.android.bluetooth");
+                startActivity(Intent.createChooser(musicIntent, "Send music..."));
                 // Send file to bluetooth
 
             }
