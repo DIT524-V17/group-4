@@ -16,8 +16,8 @@ const int ECHO_PIN = 7;
 const int encoderLeftPin = 2;
 const int encoderRightPin = 3;
 
- int fwSpeed; //set forward speed
- int bwSpeed; //set backward speed
+ int fwSpeed = 70; //set forward speed
+ int bwSpeed = -70; //set backward speed
  int rDegree =  75; //set degrees to turn right
  int lDegree = -75; //set degrees to turn left
  char Direction = 'n';
@@ -49,8 +49,7 @@ void setup() {
 }
 
 void loop(){
-  handleInput();
-
+  dancing();
   
   frDistance = frontSensor.getDistance();
   baDistance = backSensor.getDistance();
