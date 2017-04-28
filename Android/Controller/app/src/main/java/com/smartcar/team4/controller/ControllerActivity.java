@@ -3,8 +3,8 @@ package com.smartcar.team4.controller;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +22,7 @@ import java.util.UUID;
 public class ControllerActivity extends AppCompatActivity {
     RadioGroup group;
     TextView text;
+    int dPower;
     private JoystickView joystick;
     TextView test;
     Button btnDis;
@@ -49,13 +50,16 @@ public class ControllerActivity extends AppCompatActivity {
                 RadioButton rb = (RadioButton) group.findViewById(checkedID);
                 switch (rb.getId()){
                     case R.id.radioGroup1:
-                        goSlow();
+                        //goSlow();
+                        dPower = 1;
                         break;
                     case R.id.radioGroup2:
-                        goMedium();
+                        //goMedium();
+                        dPower = 2;
                         break;
                     case R.id.radioGroup3:
-                        goFast();
+                        //goFast();
+                        dPower = 3;
                         break;
                 }
 
@@ -69,32 +73,54 @@ public class ControllerActivity extends AppCompatActivity {
 
             @Override
             public void onValueChanged(int angle, int power, int direction) {
+                char dir;
+                char type = 'j';
+                byte[] bArray;
                 switch (direction) {
                     case JoystickView.FRONT:
-                        goForward();
+                        dir = 'f';
+                        bArray = intToByteArray(type, power, dir);
+                        goForward(bArray);
                         break;
                     case JoystickView.FRONT_RIGHT:
-                        goLeftFront();
+                        dir = 'q';
+                        bArray = intToByteArray(type, power, dir);
+                        goLeftFront(bArray);
                         break;
                     case JoystickView.RIGHT:
-                        goRight();
+                        dir = 'r';
+                        bArray = intToByteArray(type, power, dir);
+                        goRight(bArray);
                         break;
                     case JoystickView.RIGHT_BOTTOM:
-                        goLeftBottom();
+                        dir = 'z';
+                        bArray = intToByteArray(type, power, dir);
+                        goLeftBottom(bArray);
                         break;
                     case JoystickView.BOTTOM:
-                        goReverse();
+                        dir = 'b';
+                        bArray = intToByteArray(type, power, dir);
+                        goReverse(bArray);
                         break;
                     case JoystickView.BOTTOM_LEFT:
-                        goRightBottom();
+                        dir = 'c';
+                        bArray = intToByteArray(type, power, dir);
+                        goRightBottom(bArray);
                         break;
                     case JoystickView.LEFT:
-                        goLeft();
+                        dir = 'l';
+                        bArray = intToByteArray(type, power, dir);
+                        goLeft(bArray);
                         break;
                     case JoystickView.LEFT_FRONT:
-                        goRightFront();
+                        dir = 'e';
+                        bArray = intToByteArray(type, power, dir);
+                        goRightFront(bArray);
                         break;
-                    default: stop();
+                    default:
+                        dir = 's';
+                        bArray = intToByteArray(type, power, dir);
+                        stop(bArray);
 
                 }
             }
@@ -105,14 +131,20 @@ public class ControllerActivity extends AppCompatActivity {
         buttonForward.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                char type = 'd';
+                byte[] bArray;
+                char dir = 'f';
+                bArray = intToByteArray(type, dPower, dir);
                 switch(event.getAction()) {
                     // when button is pushed down
                     case MotionEvent.ACTION_DOWN:
-                        goForward();
+                        goForward(bArray);
                         return true;
                     // when button is released
                     case MotionEvent.ACTION_UP:
-                        stop();
+                        dir = 's';
+                        bArray = intToByteArray(type, dPower, dir);
+                        stop(bArray);
                         return true;
                 }
                 return false;
@@ -124,14 +156,20 @@ public class ControllerActivity extends AppCompatActivity {
         buttonReverse.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                char type = 'd';
+                byte[] bArray;
+                char dir = 'b';
+                bArray = intToByteArray(type, dPower, dir);
                 switch(event.getAction()) {
                     // when button is pushed down
                     case MotionEvent.ACTION_DOWN:
-                        goReverse();
+                        goReverse(bArray);
                         return true;
                     // when button is released
                     case MotionEvent.ACTION_UP:
-                        stop();
+                        dir = 's';
+                        bArray = intToByteArray(type, dPower, dir);
+                        stop(bArray);
                         return true;
                 }
                 return false;
@@ -143,14 +181,20 @@ public class ControllerActivity extends AppCompatActivity {
         buttonLeft.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                char type = 'd';
+                byte[] bArray;
+                char dir = 'l';
+                bArray = intToByteArray(type, dPower, dir);
                 switch(event.getAction()) {
                     // when button is pushed down
                     case MotionEvent.ACTION_DOWN:
-                        goLeft();
+                        goLeft(bArray);
                         return true;
                     // when button is released
                     case MotionEvent.ACTION_UP:
-                        stop();
+                        dir = 's';
+                        bArray = intToByteArray(type, dPower, dir);
+                        stop(bArray);
                         return true;
                 }
                 return false;
@@ -162,14 +206,20 @@ public class ControllerActivity extends AppCompatActivity {
         buttonRight.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                char type = 'd';
+                byte[] bArray;
+                char dir = 'r';
+                bArray = intToByteArray(type, dPower, dir);
                 switch(event.getAction()) {
                     // when button is pushed down
                     case MotionEvent.ACTION_DOWN:
-                        goRight();
+                        goRight(bArray);
                         return true;
                     // when button is released
                     case MotionEvent.ACTION_UP:
-                        stop();
+                        dir = 's';
+                        bArray = intToByteArray(type, dPower, dir);
+                        stop(bArray);
                         return true;
                 }
                 return false;
@@ -184,7 +234,6 @@ public class ControllerActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // D-Pad enabled
-                    Dpad();
                     joystick.setVisibility(View.INVISIBLE);
                     buttonForward.setVisibility(View.VISIBLE);
                     buttonLeft.setVisibility(View.VISIBLE);
@@ -194,7 +243,6 @@ public class ControllerActivity extends AppCompatActivity {
                     text.setVisibility(View.VISIBLE);
                 } else {
                     // Joystick enabled
-                    Jpad();
                     joystick.setVisibility(View.VISIBLE);
                     buttonForward.setVisibility(View.INVISIBLE);
                     buttonLeft.setVisibility(View.INVISIBLE);
@@ -207,120 +255,107 @@ public class ControllerActivity extends AppCompatActivity {
         });
     }
 
-    private void Jpad() {
+    public byte[] intToByteArray(char type, int power, char direction) {
+        return new byte[] {
+                (byte)type,
+                (byte)power,
+                (byte)direction};
+    }
+
+    private void goForward(byte[] power) {
         if(btSocket != null ){
             try{
-                btSocket.getOutputStream().write("j".getBytes());
-            } catch(IOException e){
+                btSocket.getOutputStream().write(power);
+            } catch(IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void Dpad() {
-        if(btSocket != null ){
-            try{
-                btSocket.getOutputStream().write("p".getBytes());
-            } catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void goForward() {
-        if(btSocket != null ){
-            try{
-                btSocket.getOutputStream().write("f".toString().getBytes());
-            } catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void goReverse(){
+    private void goReverse(byte[] power){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("b".toString().getBytes());
+                btSocket.getOutputStream().write(power);
             } catch(IOException f){
                 f.printStackTrace();
             }
         }
     }
 
-    private void goRight(){
+    private void goRight(byte[] power){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("r".toString().getBytes());
+                btSocket.getOutputStream().write(power);
             } catch(IOException f){
                 f.printStackTrace();
             }
         }
     }
 
-    private void goLeft(){
+    private void goLeft(byte[] power){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("l".toString().getBytes());
+                btSocket.getOutputStream().write(power);
             } catch(IOException f){
                 f.printStackTrace();
             }
         }
     }
 
-    private void goLeftFront(){
+    private void goLeftFront(byte[] power){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("q".toString().getBytes());
+                btSocket.getOutputStream().write(power);
             } catch(IOException f){
                 f.printStackTrace();
             }
         }
     }
 
-    private void goRightFront(){
+    private void goRightFront(byte[] power){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("e".toString().getBytes());
+                btSocket.getOutputStream().write(power);
             } catch(IOException f){
                 f.printStackTrace();
             }
         }
     }
 
-    private void goLeftBottom(){
+    private void goLeftBottom(byte[] power){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("z".toString().getBytes());
+                btSocket.getOutputStream().write(power);
             } catch(IOException f){
                 f.printStackTrace();
             }
         }
     }
 
-    private void goRightBottom(){
+    private void goRightBottom(byte[] power){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("c".toString().getBytes());
+                btSocket.getOutputStream().write(power);
             } catch(IOException f){
                 f.printStackTrace();
             }
         }
     }
 
-    private void stop(){
+    private void stop(byte[] power){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("s".toString().getBytes());
+                btSocket.getOutputStream().write(power);
             } catch(IOException f){
                 f.printStackTrace();
             }
         }
     }
 
-    private void goSlow(){
+    /* void goSlow(){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("1".toString().getBytes());
+                btSocket.getOutputStream().write("1".getBytes());
             } catch(IOException f){
                 f.printStackTrace();
             }
@@ -330,7 +365,7 @@ public class ControllerActivity extends AppCompatActivity {
     private void goMedium(){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("2".toString().getBytes());
+                btSocket.getOutputStream().write("2".getBytes());
             } catch(IOException f){
                 f.printStackTrace();
             }
@@ -340,12 +375,12 @@ public class ControllerActivity extends AppCompatActivity {
     private void goFast(){
         if(btSocket != null){
             try{
-                btSocket.getOutputStream().write("3".toString().getBytes());
+                btSocket.getOutputStream().write("3".getBytes());
             } catch(IOException f){
                 f.printStackTrace();
             }
         }
-    }
+    }*/
 
     private void Disconnect(){
         if (btSocket!=null){

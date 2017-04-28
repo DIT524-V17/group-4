@@ -7,71 +7,55 @@
     tools:context="com.smartcar.team4.controller.ControllerActivity">
 
 
-
     <Button
         android:id="@+id/button_reverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:width="150dp"
-        android:height="90dp"
-        android:text="Reverse"
-        android:layout_below="@+id/button_right"
-        android:layout_toRightOf="@+id/button_left"
+        android:layout_below="@+id/button_left"
+        android:layout_marginTop="16dp"
         android:layout_toEndOf="@+id/button_left"
-        android:visibility="gone"/>
-
-
+        android:layout_toRightOf="@+id/button_left"
+        android:width="150dp"
+        android:height="70dp"
+        android:text="Reverse"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/button_forward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="150dp"
-        android:height="90dp"
+        android:height="70dp"
         android:scaleX="1"
         android:scaleY="1"
         android:text="Forward"
+        android:visibility="invisible"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/button_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="150dp"
-        android:height="90dp"
+        android:height="70dp"
         android:text="Left"
+        android:visibility="invisible"
         android:layout_below="@+id/button_forward"
         android:layout_toLeftOf="@+id/button_forward"
-        android:layout_toStartOf="@+id/button_forward"
-        android:visibility="gone"/>
+        android:layout_toStartOf="@+id/button_forward" />
 
     <Button
         android:id="@+id/button_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:width="150dp"
-        android:height="90dp"
-        android:text="Right"
-        android:layout_below="@+id/button_forward"
-        android:layout_toRightOf="@+id/button_forward"
+        android:layout_alignTop="@+id/button_left"
         android:layout_toEndOf="@+id/button_forward"
-        android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/disconnect_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_red_dark"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="Disconnect"
-        android:textColor="@android:color/background_light"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        />
+        android:layout_toRightOf="@+id/button_forward"
+        android:width="150dp"
+        android:height="70dp"
+        android:text="Right"
+        android:visibility="invisible" />
 
 
     <com.smartcar.team4.controller.JoystickView
@@ -84,12 +68,74 @@
         android:id="@+id/button_toggleMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/game"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:text="ToggleButton"
         android:textOff="D-Pad"
-        android:textOn="Joystick"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:textOn="Joystick" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/game"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:height="50dp"
+        android:fontFamily="serif"
+        android:text="Choose speed"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="30sp"
+        android:layout_marginTop="47dp"
+        android:layout_alignTop="@+id/button_reverse"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <RadioGroup
+        android:id="@+id/RadioGroup"
+        android:layout_width="fill_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:checked="false"
+        android:text="Slow" />
+
+    <RadioButton
+        android:id="@+id/radioGroup2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:checked="false"
+        android:text="Medium" />
+
+    <RadioButton
+        android:id="@+id/radioGroup3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:checked="true"
+        android:text="Fast" />
+
+    </RadioGroup>
 
 
 </RelativeLayout>

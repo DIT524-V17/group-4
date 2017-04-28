@@ -16,14 +16,15 @@ const int ECHO_PIN = 7;
 const int encoderLeftPin = 2;
 const int encoderRightPin = 3;
 
-int fwSpeed =  70; //set forward speed
-int bwSpeed = -70; //set backward speed
-int rDegree =  75; //set degrees to turn right
-int lDegree = -75; //set degrees to turn left
-char Direction = 'n';
+ int fwSpeed; //set forward speed
+ int bwSpeed; //set backward speed
+ int rDegree =  75; //set degrees to turn right
+ int lDegree = -75; //set degrees to turn left
+ char Direction = 'n';
 
 int frDistance;
 int baDistance;
+boolean controls = true;
 
 void setup() {
   Serial3.begin(9600);
@@ -48,35 +49,26 @@ void setup() {
 }
 
 void loop(){
+  handleInput();
 
+  
   frDistance = frontSensor.getDistance();
   baDistance = backSensor.getDistance();
   
-  if (NoObstacle(baDistance) == false && NoObstacle(frDistance) == false) {
-    car.stop();
-  }
-  else if(NoObstacle(baDistance) == false){
-    if(NoObstacle(frDistance) == true){
-      handleInput();
+    int curSpeed = car.getSpeed(); // read the current speed of car
+    if (curSpeed == 0) {
+        Direction = 'n';
+    }
+
+    if (NoObstacle(frDistance) == false && Direction != 'b' && Direction != 'n') {
+        car.stop();
+    } 
+    else if (NoObstacle(baDistance) == false && Direction == 'b') {
+        car.stop();
     }
     else{
-      car.stop();
+        handleInput();
     }
-  }
-  
-  if(NoObstacle(frDistance) == false){
-    if(NoObstacle(baDistance) == true){
-      handleInput();
-    }
-    else{
-      car.stop();
-    }
-  }
-  else{
-    dancing();
-    handleInput();
-  }
-   
 }
 
   void dancing(){
@@ -118,124 +110,169 @@ void loop(){
   }
   }
 
-
 void handleInput() {
   if (Serial3.available()) {
-    int input;
+     char type;
+     char input;
+     int power;
+     unsigned char arr[3];
      frDistance = frontSensor.getDistance();
      baDistance = backSensor.getDistance();
      
-    while (Serial3.available()) input = Serial3.read(); //read everything that has been received so far and log down the last entry
-    if(input == '1'){
-       fwSpeed =  35; //set forward speed
-       bwSpeed = -35; //set backward speed
-       rDegree =  35; //set degrees to turn right
-       lDegree = -35;
-    } else if( input == '2'){
-       fwSpeed =  50; //set forward speed
-       bwSpeed = -50; //set backward speed
-       rDegree =  50; //set degrees to turn right
-       lDegree = -50;
-    } else if(input == '3'){
-       fwSpeed =  75; //set forward speed
-       bwSpeed = -75; //set backward speed
-       rDegree =  75; //set degrees to turn right
-       lDegree = -75;
+    while (Serial3.available() > 0)
+    Serial3.readBytes(arr,3);
+    type = (char)arr[0];
+    power =(int) arr[1];
+    input =(char)arr[2];
+
+    if(type == 'j'){
+      switch (input) {
+        case 'f': //forward
+          if(NoObstacle(frDistance) == false) {
+            car.setSpeed(0);
+          }
+          else{
+            car.setSpeed(power);
+            car.setAngle(0);
+          }
+          break;
+        case 'b': //backward
+          if(NoObstacle(baDistance) == false) {
+            car.setSpeed(0);
+          }
+          else{
+            car.setSpeed(power * -1);
+            car.setAngle(0);
+          }
+          break;
+        case 'l': //turn left
+          if(NoObstacle(frDistance) == false) {
+            car.setSpeed(0);
+          }
+          else{
+            car.setSpeed(power);
+            car.setAngle(lDegree);
+          }
+          break;
+        case 'r': //turn right
+          if(NoObstacle(frDistance) == false) {
+            car.setSpeed(0);
+          }
+          else{
+            car.setSpeed(power);
+            car.setAngle(rDegree);
+          }
+          break;
+        case 'q': //turn left front
+         if(NoObstacle(frDistance) == false) {
+            car.setSpeed(0);
+          }
+         else{
+          Serial.println(power);
+          car.setMotorSpeed(power/2 ,power);
+         }
+          break;
+        case 'e': //turn right front
+         if(NoObstacle(frDistance) == false) {
+            car.setSpeed(0);
+          }
+         else{
+          car.setMotorSpeed(power, power/2);
+         }
+          break;
+        case 'z': //turn left bottom
+          if(NoObstacle(baDistance) == false) {
+            car.setSpeed(0);
+          }
+         else{
+            car.setMotorSpeed(-1 * power/2, -1* power);
+         }
+          break;
+        case 'c': //turn right bottom
+          if(NoObstacle(baDistance) == false) {
+            car.setSpeed(0);
+          }
+         else{
+            car.setMotorSpeed(-1 * power, -1 * power/2);
+         }
+          break;
+        case 's': //stop car
+          car.setSpeed(0);
+          car.setAngle(0);
+          break;
+        default: //if there isn't any command
+          car.setSpeed(0);
+          car.setAngle(0);
+      }
     }
-    switch (input) {
-      case 'f': //forward
-       // Direction = 'f';
-        if(NoObstacle(frDistance) == false) {
-          car.setSpeed(0);
-        }
-        else{
-          car.setSpeed(fwSpeed);
-          car.setAngle(0);
-        }
-        break;
-      case 'b': //backward
-       // Direction = 'b';
-        if(NoObstacle(baDistance) == false) {
-          car.setSpeed(0);
-        }
-        else{
-          car.setSpeed(bwSpeed);
-          car.setAngle(0);
-        }
-        break;
-      case 'l': //turn left
-       // Direction = 'l';
-        if(NoObstacle(frDistance) == false) {
-          car.setSpeed(0);
-        }
-        else{
-          car.setSpeed(fwSpeed);
-          car.setAngle(lDegree);
-        }
-        break;
-      case 'r': //turn right
-       // Direction = 'r';
-        if(NoObstacle(frDistance) == false) {
-          car.setSpeed(0);
-        }
-        else{
-          car.setSpeed(fwSpeed);
-          car.setAngle(rDegree);
-        }
-        break;
-      case 'q': //turn left front
-       // Direction = 'q';
-       if(NoObstacle(frDistance) == false) {
-          car.setSpeed(0);
-        }
-       else{
-        car.setMotorSpeed(35,fwSpeed);
-       }
-        break;
-      case 'e': //turn right front
-       // Direction = 'e';
-       if(NoObstacle(frDistance) == false) {
-          car.setSpeed(0);
-        }
-       else{
-        car.setMotorSpeed(fwSpeed, 35);
-       }
-        break;
-      case 'z': //turn left bottom
-       // Direction = 'z';
-        if(NoObstacle(frDistance) == false) {
-          car.setSpeed(0);
-        }
-       else{
-          car.setMotorSpeed(-35, bwSpeed);
-       }
-        break;
-      case 'c': //turn right bottom
-       // Direction = 'c';
-        if(NoObstacle(frDistance) == false) {
-          car.setSpeed(0);
-        }
-       else{
-          car.setMotorSpeed(bwSpeed, -35);
-       }
-        break;
-      case 's': //stop car
-        car.setSpeed(0);
-        car.setAngle(0);
-        break;
-      default: //if there isn't any command
-        car.setSpeed(0);
-        car.setAngle(0);
+    else if(type == 'd'){
+      if(power == 1){
+        fwSpeed =  35; //set forward speed
+        bwSpeed = -35; //set backward speed
+        rDegree =  35; //set degrees to turn right
+        lDegree = -35;
+     } else if(power == 2){
+        fwSpeed =  50; //set forward speed
+        bwSpeed = -50; //set backward speed
+        rDegree =  50; //set degrees to turn right
+        lDegree = -50;
+     } else if(power == 3){
+        fwSpeed =  75; //set forward speed
+        bwSpeed = -75; //set backward speed
+        rDegree =  75; //set degrees to turn right
+        lDegree = -75;
+     }
+
+     // Serial.println(type);
+     //Serial.println(power);
+     //Serial.println(input);
+     switch (input) {
+       case 'f': //forward
+         Direction = 'f';
+          if(NoObstacle(frDistance) == true){
+              car.setSpeed(fwSpeed);
+              //Serial.println(fwSpeed);
+              car.setAngle(0);
+          }
+         break;
+       case 'b': //backward
+         Direction = 'b';
+          if(NoObstacle(baDistance) == true){
+              car.setSpeed(bwSpeed);
+              car.setAngle(0);
+          } 
+         break;
+       case 'l': //turn left
+         Direction = 'l';
+          if(NoObstacle(frDistance) == true){
+              car.setSpeed(fwSpeed);
+              car.setAngle(lDegree);
+          }
+         break;
+       case 'r': //turn right
+         Direction = 'r';
+          if(NoObstacle(frDistance) == true){
+              car.setSpeed(fwSpeed);
+              car.setAngle(rDegree);
+          }
+         break;
+       case 's': //stop car
+         car.setSpeed(0);
+         car.setAngle(0);
+         break;
+       default: //if there isn't any command
+         car.setSpeed(0);
+         car.setAngle(0);
+    }
     }
   }
 }
 
 
+
+
 boolean NoObstacle(int distance) {
-  if (distance > 20) {
-    return true;
-  }
-  if (distance == 0) {
+  if (distance > 20 || distance == 0) {
     return true;
   }
   else {
