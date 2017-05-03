@@ -34,15 +34,4 @@
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="130dp" />
 
-    <Button
-        android:id="@+id/button_connectToBt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="21dp"
-        android:backgroundTint="#385de3"
-        android:text="Connect"
-        android:textColor="#ffffff" />
-
 </RelativeLayout>

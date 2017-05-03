@@ -1,8 +1,5 @@
 package com.smartcar.team4.controller;
 
-import android.app.ProgressDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -12,11 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import java.io.IOException;
-import java.util.UUID;
 
 
 public class ControllerActivity extends AppCompatActivity {
@@ -24,15 +17,6 @@ public class ControllerActivity extends AppCompatActivity {
     TextView text;
     int dPower;
     private JoystickView joystick;
-    TextView test;
-    Button btnDis;
-    String address = null;
-    private ProgressDialog progress;
-    BluetoothAdapter myBluetooth = null;
-    BluetoothSocket btSocket = MenuActivity.btSocket;
-    private boolean isBtConnected = false;
-    //Not sure if the UUID is correct..
-    static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +34,12 @@ public class ControllerActivity extends AppCompatActivity {
                 RadioButton rb = (RadioButton) group.findViewById(checkedID);
                 switch (rb.getId()){
                     case R.id.radioGroup1:
-                        //goSlow();
                         dPower = 1;
                         break;
                     case R.id.radioGroup2:
-                        //goMedium();
                         dPower = 2;
                         break;
                     case R.id.radioGroup3:
-                        //goFast();
                         dPower = 3;
                         break;
                 }
@@ -126,7 +107,7 @@ public class ControllerActivity extends AppCompatActivity {
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
 
-        // Button for reverse
+        // Button for forward
         final Button buttonForward = (Button) findViewById(R.id.button_forward);
         buttonForward.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -263,135 +244,48 @@ public class ControllerActivity extends AppCompatActivity {
     }
 
     private void goForward(byte[] power) {
-        if(btSocket != null ){
-            try{
-                btSocket.getOutputStream().write(power);
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-        }
+        Client c = new Client(power);
+        c.execute();
     }
 
     private void goReverse(byte[] power){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write(power);
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
+        Client c = new Client(power);
+        c.execute();
     }
 
     private void goRight(byte[] power){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write(power);
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
+        Client c = new Client(power);
+        c.execute();
     }
 
     private void goLeft(byte[] power){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write(power);
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
+        Client c = new Client(power);
+        c.execute();
     }
 
     private void goLeftFront(byte[] power){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write(power);
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
+        Client c = new Client(power);
+        c.execute();
     }
 
     private void goRightFront(byte[] power){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write(power);
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
+        Client c = new Client(power);
+        c.execute();
     }
 
     private void goLeftBottom(byte[] power){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write(power);
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
+        Client c = new Client(power);
+        c.execute();
     }
 
     private void goRightBottom(byte[] power){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write(power);
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
+        Client c = new Client(power);
+        c.execute();
     }
 
     private void stop(byte[] power){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write(power);
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
-    }
-
-    /* void goSlow(){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write("1".getBytes());
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
-    }
-
-    private void goMedium(){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write("2".getBytes());
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
-    }
-
-    private void goFast(){
-        if(btSocket != null){
-            try{
-                btSocket.getOutputStream().write("3".getBytes());
-            } catch(IOException f){
-                f.printStackTrace();
-            }
-        }
-    }*/
-
-    private void Disconnect(){
-        if (btSocket!=null){
-            try {
-                btSocket.close();
-            }
-            catch (IOException e){
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
-            }
-        }
-        finish();
+        Client c = new Client(power);
+        c.execute();
     }
 
 }

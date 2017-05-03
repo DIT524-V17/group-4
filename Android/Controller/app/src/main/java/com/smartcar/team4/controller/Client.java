@@ -1,6 +1,7 @@
 package com.smartcar.team4.controller;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,11 +14,11 @@ import java.net.UnknownHostException;
 
 public class Client extends AsyncTask<Void, Void, Void> {
 
-    char message;
+    byte[] message;
     String ipAddress = "192.168.42.1";
     int port = 9999;
 
-    Client(char c){
+    Client(byte[] c){
         message = c;
     }
 
