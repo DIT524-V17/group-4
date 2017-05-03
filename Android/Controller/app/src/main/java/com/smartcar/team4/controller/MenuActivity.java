@@ -47,7 +47,8 @@ public class MenuActivity extends AppCompatActivity {
         button_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new ConnectToBt().execute();
+                Client c = new Client('f');
+                c.execute();
             }
         });
 
