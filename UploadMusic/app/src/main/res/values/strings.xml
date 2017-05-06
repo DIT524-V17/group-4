@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="app_name">SimpleFTP</string>
+    <string name="login">LOGIN</string>
+    <string name="download">DOWNLOAD</string>
+    <string name="upload">UPLOAD</string>
+	<string name="operate_text">MUSIC FTP TEST</string>
+</resources>
