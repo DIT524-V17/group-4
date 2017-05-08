@@ -15,7 +15,7 @@ import android.widget.ToggleButton;
 public class ControllerActivity extends AppCompatActivity {
     RadioGroup group;
     TextView text;
-    int dPower;
+    char dPower;
     private JoystickView joystick;
 
     @Override
@@ -34,13 +34,13 @@ public class ControllerActivity extends AppCompatActivity {
                 RadioButton rb = (RadioButton) group.findViewById(checkedID);
                 switch (rb.getId()){
                     case R.id.radioGroup1:
-                        dPower = 1;
+                        dPower = 'q';
                         break;
                     case R.id.radioGroup2:
-                        dPower = 2;
+                        dPower = 'w';
                         break;
                     case R.id.radioGroup3:
-                        dPower = 3;
+                        dPower = 'e';
                         break;
                 }
 
@@ -115,7 +115,9 @@ public class ControllerActivity extends AppCompatActivity {
                 char type = 'd';
                 byte[] bArray;
                 char dir = 'f';
+                char testPower = 'q';
                 bArray = intToByteArray(type, dPower, dir);
+                System.out.println("ARRRRRRRRR::::::: " + dPower);
                 switch(event.getAction()) {
                     // when button is pushed down
                     case MotionEvent.ACTION_DOWN:

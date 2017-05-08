@@ -12,7 +12,11 @@ int count  = 0;
 float BPM;
 float counter;
 //Values to be send to the arduino stored in array
-String [] commands = {"k", "s", "h"};
+byte [] command1 = {"d"};
+byte [] command2 = {"q"};
+byte [] command3 = {"f"};
+byte [][] ca = {command1 , command2 , command3};
+String [][] commands = {command1 , command2 , command3};
 
 class BeatListener implements AudioListener
 {
@@ -68,8 +72,10 @@ void sendCommands(){
   int duration = millis();
   //Get a random value from the array of commands to be used.
   int command = (int)(Math.random()*(commands.length));
+  println(commands[2][0]);
   if ( beat.isKick()){
-   if(count%2 == 0) myPort.write(commands[command]);
+//   if(count%2 == 0) 
+   myPort.write(ca[2][0]);
    count++;
    delay(500); 
 }
