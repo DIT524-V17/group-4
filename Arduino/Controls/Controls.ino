@@ -25,9 +25,8 @@ const int encoderRightPin = 3;
 int frDistance;
 int baDistance;
 boolean controls = true;
-
+char mode = 'x';
 void setup() {
-  Serial3.begin(9600);
   Serial.begin(9600);
 
   gyro.attach();
@@ -46,13 +45,23 @@ void setup() {
   frDistance = 0;
   baDistance = 0;
 
+  
+
 }
 
 void loop(){
-  dancing();
+ 
   
   frDistance = frontSensor.getDistance();
   baDistance = backSensor.getDistance();
+
+
+  if((mode == 'x') && Serial.available()){
+    
+  mode = Serial.read();
+  }
+
+
   
     int curSpeed = car.getSpeed(); // read the current speed of car
     if (curSpeed == 0) {
@@ -65,8 +74,12 @@ void loop(){
     else if (NoObstacle(baDistance) == false && Direction == 'b') {
         car.stop();
     }
-    else{
+    else if(mode == 'c'){
+      
         handleInput();
+    }else if(mode == 'o'){
+      dancing();
+      car.setSpeed(100);
     }
 }
 
@@ -109,19 +122,24 @@ void loop(){
   }
   }
 
+
 void handleInput() {
-  if (Serial3.available()) {
+
+  
+  
+  if (Serial.available()) {
+
      char type;
      char input;
-     int power;
+     char power;
      unsigned char arr[3];
      frDistance = frontSensor.getDistance();
      baDistance = backSensor.getDistance();
-     
-    while (Serial3.available() > 0)
-    Serial3.readBytes(arr,3);
+
+    while (Serial.available() > 0)
+    Serial.readBytes(arr,3);
     type = (char)arr[0];
-    power =(int) arr[1];
+    power =(char) arr[1];
     input =(char)arr[2];
 
     if(type == 'j'){
@@ -205,17 +223,17 @@ void handleInput() {
       }
     }
     else if(type == 'd'){
-      if(power == 1){
+      if(power == 'q'){
         fwSpeed =  35; //set forward speed
         bwSpeed = -35; //set backward speed
         rDegree =  35; //set degrees to turn right
         lDegree = -35;
-     } else if(power == 2){
+     } else if(power == 'w'){
         fwSpeed =  50; //set forward speed
         bwSpeed = -50; //set backward speed
         rDegree =  50; //set degrees to turn right
         lDegree = -50;
-     } else if(power == 3){
+     } else if(power == 'e'){
         fwSpeed =  75; //set forward speed
         bwSpeed = -75; //set backward speed
         rDegree =  75; //set degrees to turn right

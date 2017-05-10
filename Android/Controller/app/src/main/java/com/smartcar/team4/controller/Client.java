@@ -1,3 +1,4 @@
+// @Auther - Filip and Karan
 package com.smartcar.team4.controller;
 
 import android.os.AsyncTask;
@@ -8,9 +9,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-/**
- * Created by fwall on 2017-05-03.
- */
 
 public class Client extends AsyncTask<Void, Void, Void> {
 
