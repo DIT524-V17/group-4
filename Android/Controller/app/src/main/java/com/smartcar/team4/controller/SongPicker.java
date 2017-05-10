@@ -1,11 +1,11 @@
 package com.smartcar.team4.controller;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class SongPicker extends AppCompatActivity {
@@ -45,6 +50,29 @@ public class SongPicker extends AppCompatActivity {
         }
     }
 
+    private Socket s;
+
+    //  public SongPicker(String host, int port, Uri file) {
+//        try {
+//            s = new Socket(host, port);
+//            DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+//            //FileInputStream fis = new FileInputStream(file);
+//            InputStream fis =getContentResolver().openInputStream(file);
+//            byte[] buffer = new byte[4096];
+//
+//            while (fis.read(buffer) > 0) {
+//                dos.write(buffer);
+//            }
+//
+//            fis.close();
+//            dos.close();
+//        } catch (UnknownHostException e1) {
+//            e1.printStackTrace();
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        }
+//    }
+
     public void dostuff() {
         listView = (ListView) findViewById(R.id.listView);
         arrayList = new ArrayList<>();
@@ -62,15 +90,29 @@ public class SongPicker extends AppCompatActivity {
              */
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long rowId) {
                 Uri songUri = Uri.parse("file:///" + arrayList.get(position));
-                Intent musicIntent = new Intent();
-                musicIntent.setAction(Intent.ACTION_SEND);
-                musicIntent.putExtra(Intent.EXTRA_TEXT, "Enjoy these awesome songs");
-                musicIntent.putExtra(Intent.EXTRA_STREAM, songUri);
-                musicIntent.setType("audio/*");
-                musicIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // Grant temporary read permission to the content  URI
-                musicIntent.setPackage("com.android.bluetooth");
-                startActivity(Intent.createChooser(musicIntent, "Send music..."));
-                // Send file to bluetooth
+                try {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+                    StrictMode.setThreadPolicy(policy);
+                    s = new Socket("192.168.42.1", 9999);
+                    DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+                    //FileInputStream fis = new FileInputStream(file);
+                    InputStream fis =getContentResolver().openInputStream(songUri);
+                    byte[] buffer = new byte[4096];
+
+                    while (fis.read(buffer) > 0) {
+                        dos.write(buffer);
+                    }
+
+                    fis.close();
+                    dos.close();
+                } catch (UnknownHostException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                //SongPicker fc = new SongPicker("192.168.42.1", 9998, songUri);
+
 
             }
         });
