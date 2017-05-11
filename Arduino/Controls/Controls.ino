@@ -56,12 +56,6 @@ void loop(){
   baDistance = backSensor.getDistance();
 
 
-  if((mode == 'x') && Serial.available()){
-    
-  mode = Serial.read();
-  }
-
-
   
     int curSpeed = car.getSpeed(); // read the current speed of car
     if (curSpeed == 0) {
@@ -74,22 +68,19 @@ void loop(){
     else if (NoObstacle(baDistance) == false && Direction == 'b') {
         car.stop();
     }
-    else if(mode == 'c'){
-      
-        handleInput();
-    }else if(mode == 'o'){
+    else {
       dancing();
-      car.setSpeed(100);
+      handleInput();
     }
 }
 
   void dancing(){
-   if (Serial.available()) {
+   if (Serial2.available()) {
     char input;
     frDistance = frontSensor.getDistance();
     baDistance = backSensor.getDistance();
     
-    while (Serial.available()) input = Serial.read(); //read everything that has been received so far and log down the last entry
+    while (Serial2.available()) input = Serial2.read(); //read everything that has been received so far and log down the last entry
     switch (input) {
       case 'k': //forward
         Direction = 'k';
@@ -101,7 +92,7 @@ void loop(){
         break;
       case 's': //backward
         Direction = 's';
-//        car.setMotorSpeed(20,20);
+        car.setMotorSpeed(20,20);
         car.go(-10);
         car.rotate(60);
         car.go(20);
@@ -114,6 +105,12 @@ void loop(){
        car.rotate(90);
        car.go(5);
        car.rotate(-90);
+        break;
+      case 'x': //turn left
+        if(Serial2.available()){
+        Serial2.end();
+        }
+        Serial.begin(9600);
         break;
       default: //if there isn't any command
         car.setSpeed(0);
@@ -216,6 +213,12 @@ void handleInput() {
         case 's': //stop car
           car.setSpeed(0);
           car.setAngle(0);
+          break;
+        case 'x': //stop car
+          if(Serial.available()){
+          Serial.end();
+          }
+          Serial2.begin(9600);
           break;
         default: //if there isn't any command
           car.setSpeed(0);

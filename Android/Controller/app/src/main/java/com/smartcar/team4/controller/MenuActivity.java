@@ -25,10 +25,10 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent myIntent = new Intent(MenuActivity.this, ControllerActivity.class);
                 MenuActivity.this.startActivity(myIntent);
-                ClientChar client = new ClientChar('c');
+                char controller = 'x';
+                byte [] mode = intToByteArray('d', 0, controller);
+                Client client = new Client(mode);
                 client.execute();
-
-
             }
         });
 
@@ -43,11 +43,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent myIntent = new Intent(MenuActivity.this, SongPicker.class);
                 MenuActivity.this.startActivity(myIntent);
-                //char controller = 'o';
-                //byte [] mode = intToByteArray('d', 0, controller);
-                //Client client = new Client(mode);
-                //client.execute();
-                ClientChar client = new ClientChar('o');
+                ClientChar client = new ClientChar('x');
                 client.execute();
             }
         });

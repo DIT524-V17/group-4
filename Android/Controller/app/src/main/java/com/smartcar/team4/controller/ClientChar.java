@@ -16,7 +16,7 @@ public class ClientChar extends AsyncTask<Void, Void, Void> {
 
     char message;
     String ipAddress = "192.168.42.1";
-    int port = 9999;
+    int port = 9001;
 
     ClientChar(char c){
         message = c;
