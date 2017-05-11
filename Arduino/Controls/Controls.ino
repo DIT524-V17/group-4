@@ -27,7 +27,7 @@ int baDistance;
 boolean controls = true;
 char mode = 'x';
 void setup() {
-  Serial2.begin(9600);
+  Serial.begin(9600);
 
   gyro.attach();
   encoderLeft.attach(encoderLeftPin);
@@ -69,62 +69,14 @@ void loop(){
         car.stop();
     }
     else {
-      dancing();
       handleInput();
     }
 }
 
-  void dancing(){
-   if (Serial.available()) {
-    char input;
-    frDistance = frontSensor.getDistance();
-    baDistance = backSensor.getDistance();
-    
-    while (Serial.available()) input = Serial.read(); //read everything that has been received so far and log down the last entry
-    switch (input) {
-      case 'k': //forward
-        Direction = 'k';
-//        car.setMotorSpeed(10,10);
-          car.go(10);
-          car.rotate(-180);
-          car.go(-15);
-          car.rotate(80);
-        break;
-      case 's': //backward
-        Direction = 's';
-        car.setMotorSpeed(20,20);
-        car.go(-10);
-        car.rotate(60);
-        car.go(20);
-        car.rotate(-60);
-        break;
-      case 'h': //turn left
-        Direction = 'h';
-//        car.setMotorSpeed(0,70);
-        car.go(20);
-       car.rotate(90);
-       car.go(5);
-       car.rotate(-90);
-        break;
-      case 'x': //turn left
-        if(Serial.available()){
-        Serial.end();
-        }
-        Serial2.begin(9600);
-        break;
-      default: //if there isn't any command
-        car.setSpeed(0);
-        car.setAngle(0);
-    }
-  }
-  }
-
 
 void handleInput() {
-
   
-  
-  if (Serial2.available()) {
+  if (Serial.available()) {
 
      char type;
      char input;
@@ -133,8 +85,8 @@ void handleInput() {
      frDistance = frontSensor.getDistance();
      baDistance = backSensor.getDistance();
 
-    while (Serial2.available() > 0)
-    Serial2.readBytes(arr,3);
+    while (Serial.available() > 0)
+    Serial.readBytes(arr,3);
     type = (char)arr[0];
     power =(char) arr[1];
     input =(char)arr[2];
@@ -182,7 +134,7 @@ void handleInput() {
             car.setSpeed(0);
           }
          else{
-          Serial2.println(power);
+          Serial.println(power);
           car.setMotorSpeed(power/2 ,power);
          }
           break;
@@ -213,12 +165,6 @@ void handleInput() {
         case 's': //stop car
           car.setSpeed(0);
           car.setAngle(0);
-          break;
-        case 'x': //stop car
-          if(Serial2.available()){
-          Serial2.end();
-          }
-          Serial.begin(9600);
           break;
         default: //if there isn't any command
           car.setSpeed(0);
