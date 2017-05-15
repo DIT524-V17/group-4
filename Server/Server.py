@@ -1,5 +1,7 @@
 ### Auther - Karan and Filip 
-#! /usr/bin/env python 
+#! /usr/bin/env python
+import http.server
+import socketserver 
 from socket import *
 from _thread import *
 import serial 
@@ -21,18 +23,22 @@ def handler(clientsock,addr):
                         b = data.decode('UTF-8')
                         print(b)
                         ser.write(b.encode())        
-
+						#serversocket.shutdown(1)
+						#serversocket.close()
                         break
                 # clientsock.close() # - reports [Errno 9] Bad file descriptor as it looks like that socket is trying to send data when it is already closed.
 
 if __name__=='__main__':
-        ADDR = (HOST, PORT)
-        serversock = socket(AF_INET, SOCK_STREAM)
-        serversock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        serversock.bind(ADDR)
-        serversock.listen(5)
-        while 1:
+		Handler = http.server.SimpleHTTPRequestHandler
+        serversocket = socket(AF_INET, SOCK_STREAM)
+        serversocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+        serversocket.bind(ADDR)
+        serversocket.listen(5)
+        while True:
                 print('waiting for connection...')
-                clientsock, addr = serversock.accept()
+                (clientsock, addr) = serversock.accept()
                 print ('... connected from:', addr)
                 start_new_thread(handler, (clientsock, addr))
+
+class MyServer(socketserver.socket):
+					allow_reuse_address = True
