@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.smartcar.team4.controller.DanceControllerActivity">
+
+    <Button
+        android:id="@+id/buttonDance"
+        android:layout_width="217dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="68dp"
+        android:text="Start"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="130dp"
+        android:layout_below="@+id/textSong"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/buttonSong2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Song2"
+        android:layout_alignBaseline="@+id/buttonSong1"
+        android:layout_alignBottom="@+id/buttonSong1"
+        android:layout_alignRight="@+id/buttonStop"
+        android:layout_alignEnd="@+id/buttonStop" />
+
+    <Button
+        android:id="@+id/buttonStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonSong1"
+        android:layout_alignEnd="@+id/buttonDance"
+        android:layout_alignLeft="@+id/buttonDance"
+        android:layout_alignRight="@+id/buttonDance"
+        android:layout_alignStart="@+id/buttonDance"
+        android:layout_marginBottom="11dp"
+        android:text="Stop" />
+
+    <Button
+        android:id="@+id/buttonSong1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Song1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/buttonDance"
+        android:layout_alignStart="@+id/buttonDance"
+        android:layout_marginBottom="119dp" />
+
+    <TextView
+        android:id="@+id/textSong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:text="Song 1"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
+        android:text="Current Song:"
+        android:textSize="36sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/buttonDance"
+        android:layout_alignStart="@+id/buttonDance" />
+
+
+</RelativeLayout>

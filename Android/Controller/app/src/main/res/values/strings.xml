@@ -16,4 +16,6 @@
     <string name="musicDir">/Music/You.mp3</string>
     <string name="musicDir1">/Music/pokeface.mp3</string>
     <string name="title_activity_dancing">dancing</string>
+    <string name="title_activity_song_control">SongControlActivity</string>
+    <string name="title_activity_test">Test</string>
 </resources>

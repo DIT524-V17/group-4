@@ -13,9 +13,9 @@
         android:id="@+id/button_launchController"
         android:layout_width="217dp"
         android:layout_height="85dp"
-        android:layout_above="@+id/button_launchDancing"
-        android:layout_alignLeft="@+id/button_launchDancing"
-        android:layout_alignStart="@+id/button_launchDancing"
+        android:layout_above="@+id/buttonDance"
+        android:layout_alignLeft="@+id/buttonDance"
+        android:layout_alignStart="@+id/buttonDance"
         android:layout_marginBottom="16dp"
         android:text="Controller"
         android:visibility="visible"
@@ -23,7 +23,7 @@
         tools:layout_editor_absoluteY="130dp" />
 
     <Button
-        android:id="@+id/button_launchDancing"
+        android:id="@+id/buttonDance"
         android:layout_width="217dp"
         android:layout_height="85dp"
         android:layout_marginBottom="44dp"

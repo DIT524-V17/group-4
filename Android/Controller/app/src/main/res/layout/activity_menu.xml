@@ -13,14 +13,13 @@
         android:id="@+id/button_launchController"
         android:layout_width="217dp"
         android:layout_height="85dp"
-        android:layout_above="@+id/button_launchDancing"
-        android:layout_alignLeft="@+id/button_launchDancing"
-        android:layout_alignStart="@+id/button_launchDancing"
-        android:layout_marginBottom="16dp"
         android:text="Controller"
         android:visibility="visible"
         tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="130dp" />
+        tools:layout_editor_absoluteY="130dp"
+        android:layout_above="@+id/button_launchDancing"
+        android:layout_alignLeft="@+id/button_launchDancing"
+        android:layout_alignStart="@+id/button_launchDancing" />
 
     <Button
         android:id="@+id/button_launchDancing"

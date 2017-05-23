@@ -25,7 +25,7 @@ const int encoderRightPin = 3;
 int frDistance;
 int baDistance;
 boolean controls = true;
-char mode = 'x';
+
 void setup() {
   Serial.begin(9600);
 
@@ -87,6 +87,7 @@ void handleInput() {
 
     while (Serial.available() > 0)
     Serial.readBytes(arr,3);
+    Serial.println(arr[0]);
     type = (char)arr[0];
     power =(char) arr[1];
     input =(char)arr[2];

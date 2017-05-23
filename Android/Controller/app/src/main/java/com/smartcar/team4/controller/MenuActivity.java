@@ -12,7 +12,6 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent newint = getIntent();
-        //Calls the bluetooth connection method.
 
         //setContentView(R.layout.activity_menu);
         setContentView(R.layout.activity_menu);
@@ -29,32 +28,17 @@ public class MenuActivity extends AppCompatActivity {
         });
 
 
-
-
-
-        Button button_dancing = (Button) findViewById(R.id.button_launchDancing);
+        final Button button_dancing = (Button) findViewById(R.id.button_launchDancing);
         button_dancing.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(MenuActivity.this, SongPicker.class);
+                Intent myIntent = new Intent(MenuActivity.this, DanceControllerActivity.class);
                 MenuActivity.this.startActivity(myIntent);
             }
         });
 
-    }
 
-    public byte[] intToByteArray(char mode) {
-        return new byte[] {
-                (byte) mode};
     }
-
-    public byte[] intToByteArray(char type, int power, char direction) {
-        return new byte[] {
-                (byte)type,
-                (byte)power,
-                (byte)direction};
-    }
-
 
 }
