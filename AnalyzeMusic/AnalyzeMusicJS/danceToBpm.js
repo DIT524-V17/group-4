@@ -10,19 +10,19 @@ var commandArr;
 var started;
 
 function preload(){
-  portName = '/dev/ttyACM0';
+  portName = '/dev/ttyACM0'; //Setup connection to the arduino
   serial = new p5.SerialPort(); // make a new instance of the serialport library
   serial.open(portName); // Open the port to the arduino
 }
 
 function setup() {
-  //Initialize variables
-  started = false;
-  song = loadSound('data/winning.mp3'); //Default song
-  forward = toUTF8Array('dqf'); back = toUTF8Array('dqb'); left = toUTF8Array('dql'); right = toUTF8Array('dqr'); stop = toUTF8Array('dqs');
+  started = false; //Variable to control the loop in the drawfunction
+  song = loadSound('data/song1.mp3'); //Default song
+  //Initialize movement and add them to an array
+  forward = toUTF8Array('def'); back = toUTF8Array('deb'); left = toUTF8Array('del'); right = toUTF8Array('der'); stop = toUTF8Array('dqs');
   commandArr = [forward, back, left, right];
   count = 0;
-  noLoop();
+  noLoop(); // Stop the draw function from running in the beginning.
 
   // Get the BPM of the song and then run the playSong function.
 
@@ -52,15 +52,35 @@ function setStart(){
     started = false;
     noLoop();
     count = 0;
+    serial.write(stop);
   }
   }
-function keyPressed(){
-  if (keyCode === LEFT_ARROW) song = loadSound('data/grey.mp3');
-  if (keyCode === RIGHT_ARROW) song = loadSound('data/test2.mp3');
-  if (keyCode === UP_ARROW) getBPM(song, playSong); //Calculate the BPM of the song and play it.
-  if (keyCode === DOWN_ARROW) song.stop(); count = 0; //Stop the song
-  if (keyCode === ALT) song.pause(); //Pause the song
+function keyTyped(){
+  switch(key){
+    case 'a':
+      if(!song.isPlaying()) song = loadSound('data/song1.mp3');
+      break;
+    case 'b':
+      if(!song.isPlaying()) song = loadSound('data/song2.mp3');
+      break;
+    case 'p':
+      if(!song.isPlaying()) getBPM(song, playSong); //Calculate the BPM of the song and play it.
+      break;
+    case 's':
+    if(song.isPlaying()){
+      serial.write(stop);
+      console.log("Stop");
+      song.stop(); //Stop the song
+      count = 0;
+      noLoop();
     }
+    break;
+    default:
+      noLoop();
+      song.stop();
+      serial.write(stop);
+  }
+}
 
 
 function playSong(bpm){

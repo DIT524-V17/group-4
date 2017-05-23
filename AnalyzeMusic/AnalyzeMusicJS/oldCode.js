@@ -178,3 +178,26 @@ function mapTempo(theoreticalTempo) {
     theoreticalTempo /= 2;
   return theoreticalTempo;
 }
+
+
+//
+// if (key === 'a') {
+//   if(!song.isPlaying()) song = loadSound('data/grey.mp3');
+// }
+// if (key === 'b') {
+// if(!song.isPlaying()) song = loadSound('data/safe.mp3');
+// }
+// if (key === 'p') {
+//   if(!song.isPlaying()){
+//     getBPM(song, playSong); //Calculate the BPM of the song and play it.
+//   }
+// }
+// if (key === 's'){
+//   if(song.isPlaying()){
+//     serial.write(stop);
+//     console.log("Stop");
+//     song.stop(); //Stop the song
+//     count = 0;
+//     noLoop();
+//   }
+// }

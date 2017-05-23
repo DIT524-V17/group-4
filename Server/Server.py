@@ -1,44 +1,66 @@
-### Auther - Karan and Filip 
 #! /usr/bin/env python
+#@ Author: Filip Walldén, Simon Löfving, Karanveer Singh & Anton Karlsson
 import http.server
-import socketserver 
+import socketserver
 from socket import *
 from _thread import *
-import serial 
-
+import serial
+import os
+import subprocess
+import webbrowser
+from pykeyboard import PyKeyboard
 
 
 ser= serial.Serial('/dev/ttyACM0', 9600)
 byteArray = ()
 BUFF = 1024
-HOST = '192.168.42.1' #must be input parameter @TODO
-PORT = 9999 # must be input parameter @TODO
+PORT = 9998
+HOST = '192.168.42.1'
+keyboard = PyKeyboard()
+subprocess.Popen(['http-server'],cwd='/home/pi/Desktop/p5.serialport-master')
+subprocess.Popen(['node', 'startserver.js'],cwd='/home/pi/Desktop/p5.serialport-master')
+webbrowser.open_new('http://127.0.0.1:8080')
+
+
 def response(key):
         return ('this_is_the_return_from_the_server')
 
+
+
 def handler(clientsock,addr):
-                while 1:
-                        data = clientsock.recv(BUFF) 
+        while 1:
+                        data = clientsock.recv(BUFF)
                         print ('data:' + repr(data))
                         b = data.decode('UTF-8')
                         print(b)
-                        ser.write(b.encode())        
-						#serversocket.shutdown(1)
-						#serversocket.close()
+                        if b == 'dnc':
+                                keyboard.tap_key('p')
+                        if b == 'stp':
+                                keyboard.tap_key('s')
+                        if b == 'sn1':
+                                keyboard.tap_key('a')
+                        if b == 'sn2':
+                                keyboard.tap_key('b')
+                        ser.write(b.encode())
+                        #serversocket.shutdown(1)
+                        #serversocket.close()
                         break
-                # clientsock.close() # - reports [Errno 9] Bad file descriptor as it looks like that socket is trying to send data when it is already closed.
-
 if __name__=='__main__':
-		Handler = http.server.SimpleHTTPRequestHandler
+        Handler = http.server.SimpleHTTPRequestHandler
         serversocket = socket(AF_INET, SOCK_STREAM)
         serversocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        serversocket.bind(ADDR)
+        serversocket.bind((HOST, PORT))
         serversocket.listen(5)
+        #serversock.serve_forever()
+
         while True:
                 print('waiting for connection...')
-                (clientsock, addr) = serversock.accept()
+                (clientsock, addr) = serversocket.accept()
                 print ('... connected from:', addr)
                 start_new_thread(handler, (clientsock, addr))
 
+
+
+
 class MyServer(socketserver.socket):
-					allow_reuse_address = True
+        allow_reuse_address = True
