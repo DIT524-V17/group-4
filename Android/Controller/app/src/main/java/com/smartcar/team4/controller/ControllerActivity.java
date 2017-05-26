@@ -1,5 +1,6 @@
 /*
-Coded by: Andrius, Margit
+@Authors: Andrius, Margit
+Karan(worked on controlling the car using DPad)
  */
 
 package com.smartcar.team4.controller;

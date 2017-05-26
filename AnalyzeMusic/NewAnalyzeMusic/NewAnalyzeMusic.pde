@@ -1,4 +1,4 @@
-//Author Simon Löfving
+//Author Simon Löfving and Karanveer Singh
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import processing.serial.*;
