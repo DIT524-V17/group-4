@@ -1,3 +1,6 @@
+/*
+coded by: Andrius, Margit
+ */
 package com.smartcar.team4.controller;
 
 import android.content.ContentResolver;
