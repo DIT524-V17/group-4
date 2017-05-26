@@ -1,5 +1,5 @@
 
-//@Author Simon Löfving
+// @author Simon Löfving
 
 //Global variables
 var song;
