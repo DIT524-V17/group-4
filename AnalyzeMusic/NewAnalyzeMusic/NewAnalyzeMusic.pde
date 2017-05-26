@@ -1,3 +1,4 @@
+//Author Simon Löfving
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import processing.serial.*;
@@ -12,11 +13,7 @@ int count  = 0;
 float BPM;
 float counter;
 //Values to be send to the arduino stored in array
-byte [] command1 = {"d"};
-byte [] command2 = {"q"};
-byte [] command3 = {"f"};
-byte [][] ca = {command1 , command2 , command3};
-String [][] commands = {command1 , command2 , command3};
+String [] commands = {"k", "s", "h"};
 
 class BeatListener implements AudioListener
 {
@@ -69,23 +66,12 @@ void draw()
 }
 
 void sendCommands(){
-  int duration = millis();
   //Get a random value from the array of commands to be used.
   int command = (int)(Math.random()*(commands.length));
-  println(commands[2][0]);
-  if ( beat.isKick()){
-//   if(count%2 == 0) 
-   myPort.write(ca[2][0]);
-   count++;
+  //If the program detects a beat send a command to the arduino
+  //and set a delay in order to not send to many commands. 
+  if ( beat.isKick()){ 
+   myPort.write(commands[command]);
    delay(500); 
 }
-//if(duration>15000){
-//song.pause();
-//}
-/*
-  if ( beat.isSnare() ){
-  snareSize = 32;
-  myPort.write(commands[command]);
-  println("hej");
-}*/
 }

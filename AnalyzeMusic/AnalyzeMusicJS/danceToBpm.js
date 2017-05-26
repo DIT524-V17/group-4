@@ -1,4 +1,6 @@
 
+//@Author Simon Löfving
+
 //Global variables
 var song;
 var count;
@@ -18,8 +20,9 @@ function preload(){
 function setup() {
   started = false; //Variable to control the loop in the drawfunction
   song = loadSound('data/song1.mp3'); //Default song
-  //Initialize movement and add them to an array
+  //Initialize movement commands and convert them to a byte array.
   forward = toUTF8Array('def'); back = toUTF8Array('deb'); left = toUTF8Array('del'); right = toUTF8Array('der'); stop = toUTF8Array('dqs');
+  //Add the movement commands to an array.
   commandArr = [forward, back, left, right];
   count = 0;
   noLoop(); // Stop the draw function from running in the beginning.
@@ -30,7 +33,7 @@ function setup() {
 function draw(){
   if(started){ //Check if the song has started
   var command = Math.floor((Math.random()*(commandArr.length))); //Random number from the length of the command array
-  //On every other beat send a dance command to the car, else stop it.
+  //On every other beat send a dance command to the car, else send a stop command.
   if(count % 2 == 0) {
     serial.write(commandArr[command]);
     console.log(commandArr[command]);
@@ -43,6 +46,7 @@ function draw(){
   song.onended(setStart); //If the song has ended, stop the loop.
 }
 }
+//Function to control the loop of the draw function.
 function setStart(){
   if(started == false){
     started = true;
@@ -55,6 +59,7 @@ function setStart(){
     serial.write(stop);
   }
   }
+  //Function to load, play and stop songs.
 function keyTyped(){
   switch(key){
     case 'a':
@@ -88,7 +93,6 @@ function playSong(bpm){
   //in order to get it in beats per second which will set the loop speed
   //of the draw function.
   var fps = bpm.tempo/60;
-  var bpmToMillis = 60000/bpm.tempo;
   console.log(bpm.tempo);
   frameRate(fps);
   song.play(); //Play the song
@@ -126,7 +130,6 @@ function playSong(bpm){
       callback(topTempos[0]);
     };
 };
-// process peaks
 var Peak = function (amp, i) {
   this.sampleIndex = i;
   this.amplitude = amp;
@@ -184,7 +187,7 @@ function countIntervalsBetweenNearbyPeaks(peaksObj) {
   }
   return intervalCounts;
 }
-// 3. for processPeaks --> find tempo
+//for processPeaks --> find tempo
 function groupNeighborsByTempo(intervalCounts, sampleRate) {
   var tempoCounts = [];
   intervalCounts.forEach(function (intervalCount, i) {
@@ -226,6 +229,7 @@ function mapTempo(theoreticalTempo) {
   return theoreticalTempo;
 }
 
+//Function to turn a string into a byte array.
 function toUTF8Array(str) {
     var utf8 = [];
     for (var i=0; i < str.length; i++) {
