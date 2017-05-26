@@ -1,7 +1,7 @@
 package sem.simpleftp;
 
 /**
- * Created by mitaosi
+ * Author Qing Lin
  */
 
 public class FTPConfig {

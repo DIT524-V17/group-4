@@ -1,5 +1,7 @@
 package sem.simpleftp;
-
+/*
+Author Qing Lin
+*/
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;

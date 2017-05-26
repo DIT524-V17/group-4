@@ -1,7 +1,7 @@
 package com.smartcar.team4.controller;
 
 /**
- * Created by AOO on 2017/4/7.
+ * Author Qing Lin
  */
 
 import android.app.Service;

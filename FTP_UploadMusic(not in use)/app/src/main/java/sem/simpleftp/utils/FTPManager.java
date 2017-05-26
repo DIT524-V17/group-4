@@ -1,5 +1,7 @@
 package sem.simpleftp.utils;
-
+/*
+Author Qing Lin
+*/
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

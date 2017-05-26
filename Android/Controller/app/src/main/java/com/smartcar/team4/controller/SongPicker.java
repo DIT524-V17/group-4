@@ -1,6 +1,7 @@
 /*
-coded by: Andrius, Margit
- */
+* Authors: Andrius, Margit
+* Qing Lin(worked on fixing contentpriver and  output/input datastream )
+*/
 package com.smartcar.team4.controller;
 
 import android.content.ContentResolver;
