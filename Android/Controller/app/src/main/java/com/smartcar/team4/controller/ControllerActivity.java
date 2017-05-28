@@ -1,5 +1,5 @@
 /*
-@Authors: Andrius, Margit
+@Authors: Andrius, Margit, Filip
 Karan(worked on controlling the car using DPad)
  */
 

@@ -1,3 +1,4 @@
+// @author Filip
 package com.smartcar.team4.controller;
 
 import android.support.v7.app.AppCompatActivity;
@@ -46,7 +47,9 @@ public class DanceControllerActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                if(state) {
+                if(true) {
+                    Client c = new Client(intToByteArray('s', 't', 'p'));
+                    c.execute();
                     Client c = new Client(intToByteArray('s', 'n', '1'));
                     c.execute();
                     currentSong.setText("Song 1");
@@ -60,7 +63,9 @@ public class DanceControllerActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                if(state) {
+                if(true) {
+                    Client c = new Client(intToByteArray('s', 't', 'p'));
+                    c.execute();
                     Client c = new Client(intToByteArray('s', 'n', '2'));
                     c.execute();
                     currentSong.setText("Song 2");

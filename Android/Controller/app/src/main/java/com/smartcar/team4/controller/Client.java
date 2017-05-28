@@ -1,4 +1,4 @@
-// @Auther - Filip and Karan
+// @Author - Filip and Karan
 package com.smartcar.team4.controller;
 
 import android.os.AsyncTask;
